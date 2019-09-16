@@ -1,64 +1,31 @@
 package org.apdoer.manager.model.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
-import org.apdoer.manager.model.pojo.RolePo;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Set;
+import java.util.Date;
 
 /**
  * @author apdoer
  * @date 2018-12-03
  */
 @Entity
-@Getter
-@Setter
-@Table(name = "permission")
+@Data
+@Table(name = "biz_permission")
 public class PermissionPo implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@NotNull(groups = {Update.class})
-	private Long id;
+	private Integer id;
 
-	@NotBlank
 	private String name;
 
-	/**
-	 * 上级类目
-	 */
-	@NotNull
-	@Column(name = "pid",nullable = false)
-	private Long pid;
+	private String value;
 
-	@NotBlank
-	private String alias;
+	private Integer parentId;
 
-	@JsonIgnore
-	@ManyToMany(mappedBy = "permissions")
-	private Set<RolePo> roles;
+	private Byte enabled;
 
-	@CreationTimestamp
-	@Column(name = "create_time")
-	private Timestamp createTime;
-
-	@Override
-	public String toString() {
-		return "Permission{" +
-				"id=" + id +
-				", name='" + name + '\'' +
-				", pid=" + pid +
-				", alias='" + alias + '\'' +
-				", createTime=" + createTime +
-				'}';
-	}
-
-	public interface Update{}
+	private Date createTime;
 }

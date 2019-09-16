@@ -35,7 +35,6 @@ public class VerificationCodePo implements Serializable {
      */
     private Boolean status = true;
 
-
     /**
      * 类型 ：phone 和 email
      */

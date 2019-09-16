@@ -12,7 +12,7 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public enum ExceptionCode {
+public enum ExceptionCodeEnum {
 
 	/**
 	 * 0400-0499：服务响应
@@ -21,7 +21,7 @@ public enum ExceptionCode {
 	SUCCESS( 0, "success" ),
 
 	/*失败*/
-	FIAL( 101080400, "fail" ),
+	FAIL( 101080400, "fail" ),
 
 	/*请求超时*/
 	REQUEST_TIMEOUT( 101080401, "request timeout" ),
@@ -49,13 +49,13 @@ public enum ExceptionCode {
 
 	private static Map<Integer, String> map = new HashMap<Integer, String>();
 
-	private static List<ExceptionCode> list = new ArrayList<ExceptionCode>();
+	private static List<ExceptionCodeEnum> list = new ArrayList<ExceptionCodeEnum>();
 
 	static {
-		for (ExceptionCode status : ExceptionCode.values()) {
+		for (ExceptionCodeEnum status : ExceptionCodeEnum.values()) {
 			map.put(status.getCode(), status.getValue());
 		}
-		list.addAll(Arrays.asList(ExceptionCode.values()));
+		list.addAll(Arrays.asList(ExceptionCodeEnum.values()));
 	}
 
 	/**
@@ -72,7 +72,7 @@ public enum ExceptionCode {
 	 *
 	 * @return
 	 */
-	public static List<ExceptionCode> getList() {
+	public static List<ExceptionCodeEnum> getList() {
 		return list;
 	}
 
@@ -82,8 +82,8 @@ public enum ExceptionCode {
 	 * @param codeNo
 	 * @return
 	 */
-	public static ExceptionCode getCategory(int codeNo) {
-		for (ExceptionCode status : list) {
+	public static ExceptionCodeEnum getCategory(int codeNo) {
+		for (ExceptionCodeEnum status : list) {
 			if (status.getCode() == codeNo) {
 				return status;
 			}
@@ -98,7 +98,7 @@ public enum ExceptionCode {
 	 * @return
 	 */
 	public static String getName(int codeNo) {
-		for (ExceptionCode status : list) {
+		for (ExceptionCodeEnum status : list) {
 			if (status.getCode() == codeNo) {
 				return status.getValue();
 			}

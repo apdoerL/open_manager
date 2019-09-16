@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
  * @author create by apdoer
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 public enum LogicalEnum {
 	/**

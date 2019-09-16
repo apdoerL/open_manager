@@ -1,11 +1,9 @@
 package org.apdoer.manager.model.pojo;
 
 import lombok.Data;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -21,7 +19,6 @@ public class QuartzJobPo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull(groups = {Update.class})
     private Long id;
 
     /**
@@ -73,9 +70,7 @@ public class QuartzJobPo implements Serializable {
     /**
      * 创建日期
      */
-    @UpdateTimestamp
     @Column(name = "update_time")
     private Timestamp updateTime;
 
-    public interface Update{}
 }

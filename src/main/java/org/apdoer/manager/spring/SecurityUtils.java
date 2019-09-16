@@ -1,5 +1,7 @@
 package org.apdoer.manager.spring;
 
+import org.apdoer.manager.model.pojo.BizUserPo;
+import org.apdoer.manager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -10,13 +12,16 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author apdoer
+ */
 @Service
 public  class SecurityUtils {
-	
+
 	@Autowired
-	private  UserService userService;
-	
-    public  Integer getCurrentUserId() {
+	private UserService userService;
+
+    public Integer getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(null == authentication) {
         	return null;
@@ -24,13 +29,13 @@ public  class SecurityUtils {
         String currentUserName = null;
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
              currentUserName = authentication.getName();
-             UserPo user = userService.getUserByUsername(currentUserName);
+             BizUserPo user = userService.getUserByUsername(currentUserName);
              return user.getId();
         }
         return null;
     }
-    
-    public UserPo getUserInfo() {
+
+    public BizUserPo getUserInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (null == authentication) {
         	return null;
@@ -43,7 +48,7 @@ public  class SecurityUtils {
         	return null;
         }
     }
-    
+
     public String getCurrentUserName() {
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     	if (null == authentication) {
@@ -51,11 +56,11 @@ public  class SecurityUtils {
     	}
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             return authentication.getName();
-            
+
         }
         return null;
     }
-    
+
     public boolean isAuthenticated() {
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     	if (null == authentication) {
@@ -67,7 +72,7 @@ public  class SecurityUtils {
     		return false;
     	}
     }
-    
+
     public List<String> getPermissions() {
     	List<String> permissions = new ArrayList<>();
     	 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

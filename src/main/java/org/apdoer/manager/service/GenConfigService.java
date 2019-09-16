@@ -1,6 +1,5 @@
 package org.apdoer.manager.service;
 
-import org.apdoer.manager.model.pojo.GeneConfigPo;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -12,18 +11,18 @@ import org.springframework.cache.annotation.Cacheable;
 @CacheConfig(cacheNames = "genConfig")
 public interface GenConfigService {
 
-    /**
-     * find
-     * @return
-     */
-    @Cacheable(key = "'1'")
-    GeneConfigPo find();
-
-    /**
-     * update
-     * @param genConfig
-     * @return
-     */
-    @CacheEvict(allEntries = true)
-    GeneConfigPo update(GeneConfigPo genConfig);
+//    /**
+//     * find
+//     * @return
+//     */
+//    @Cacheable(key = "'1'")
+//    GeneConfigPo find();
+//
+//    /**
+//     * update
+//     * @param genConfig
+//     * @return
+//     */
+//    @CacheEvict(allEntries = true)
+//    GeneConfigPo update(GeneConfigPo genConfig);
 }

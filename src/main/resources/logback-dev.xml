@@ -188,7 +188,7 @@
 
     <!--普通日志输出到控制台-->
     <root level="info">
-        <appender-ref ref="console" />
+<!--        <appender-ref ref="console" />-->
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="file-debug-asysc"/>
         <appender-ref ref="file-info-asysc"/>
@@ -202,26 +202,26 @@
 
     <!--监控sql日志输出 -->
     <logger name="jdbc.sqlonly" level="INFO" additivity="false">
-        <appender-ref ref="console" />
+        <appender-ref ref="STDOUT" />
     </logger>
 
     <logger name="jdbc.resultset" level="ERROR" additivity="false">
-        <appender-ref ref="console" />
+        <appender-ref ref="STDOUT" />
     </logger>
 
     <logger name="jdbc.resultsettable" level="INFO" additivity="false">
-        <appender-ref ref="console" />
+        <appender-ref ref="STDOUT" />
     </logger>
 
     <logger name="jdbc.connection" level="OFF" additivity="false">
-        <appender-ref ref="console" />
+        <appender-ref ref="STDOUT" />
     </logger>
 
     <logger name="jdbc.sqltiming" level="OFF" additivity="false">
-        <appender-ref ref="console" />
+        <appender-ref ref="STDOUT" />
     </logger>
 
     <logger name="jdbc.audit" level="OFF" additivity="false">
-        <appender-ref ref="console" />
+        <appender-ref ref="STDOUT" />
     </logger>
 </configuration>
