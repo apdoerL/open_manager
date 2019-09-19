@@ -21,7 +21,7 @@ public  class SecurityUtils {
 	@Autowired
 	private UserService userService;
 
-    public Integer getCurrentUserId() {
+    public Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(null == authentication) {
         	return null;

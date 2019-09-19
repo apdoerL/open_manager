@@ -18,9 +18,9 @@ import java.util.Enumeration;
 
 /**
  * @description: 校验接口幂等拦截器
- * @Version:
- * @author: yang
- * @create: 2019-04-28 09:52
+ * @version:
+ * @author: apdoer
+ * @date: 2019-04-28 09:52
  */
 @Slf4j
 @Component

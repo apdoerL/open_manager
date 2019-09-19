@@ -1,7 +1,7 @@
 package org.apdoer.manager.config;
 
 import org.apdoer.manager.interceptor.RequiresIdempotencyInterceptor;
-import org.apdoer.manager.interceptor.RequiresPermissionsInterceptorService;
+import org.apdoer.manager.interceptor.RequiresPermissionsInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -17,13 +17,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
  */
 @Configuration
 public class RequiresPermissionsConfig extends WebMvcConfigurationSupport {
-	private RequiresPermissionsInterceptorService interceptor;
+	private RequiresPermissionsInterceptor interceptor;
 	private RequiresIdempotencyInterceptor requiresIdempotencyInterceptor;
 
 
 
 	@Autowired
-	public void setInterceptor(RequiresPermissionsInterceptorService interceptor) {
+	public void setInterceptor(RequiresPermissionsInterceptor interceptor) {
 		this.interceptor = interceptor;
 	}
 	@Autowired

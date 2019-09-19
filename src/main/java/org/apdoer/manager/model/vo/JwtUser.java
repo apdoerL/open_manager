@@ -2,6 +2,7 @@ package org.apdoer.manager.model.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
  */
 @Getter
 @AllArgsConstructor
+@Builder
 public class JwtUser implements UserDetails {
 
     @JsonIgnore
@@ -33,9 +36,7 @@ public class JwtUser implements UserDetails {
 
     private final String phone;
 
-    private final String dept;
-
-    private final String job;
+    private final String googleCode;
 
     @JsonIgnore
     private final Collection<GrantedAuthority> authorities;
@@ -44,8 +45,7 @@ public class JwtUser implements UserDetails {
 
     private Timestamp createTime;
 
-    @JsonIgnore
-    private final Date lastPasswordResetDate;
+    private Set<String> permissions;
 
     @JsonIgnore
     @Override

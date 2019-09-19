@@ -4,10 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apdoer.manager.exception.BadRequestException;
 import org.apdoer.manager.exception.EntityExistException;
 import org.apdoer.manager.exception.EntityNotFoundException;
+import org.apdoer.manager.exception.QueryMysqlException;
+import org.apdoer.manager.model.vo.ResultVo;
+import org.apdoer.manager.utils.ResultVoBuildUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import static org.springframework.http.HttpStatus.*;
 
@@ -19,6 +23,19 @@ import static org.springframework.http.HttpStatus.*;
 @Slf4j
 @RestControllerAdvice
 public class CommonExceptionHandler {
+
+
+    /**
+     * 处理查库异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(QueryMysqlException.class)
+    @ResponseBody
+    public ResultVo handleQueryMysqlException(QueryMysqlException e){
+        log.error("exception:",e);
+        return ResultVoBuildUtils.buildResultVo(e.getExceptionCodeEnum().getCode(),e.getExceptionCodeEnum().getValue());
+    }
 
     /**
      * 处理未知异常

@@ -1,16 +1,14 @@
 package org.apdoer.manager.model.vo;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-import java.io.Serializable;
+import lombok.Data;
 
 /**
  * @author apdoer
  * @date 2018-11-23
- * 返回token
+ * 返回给前端的 token 和uservo
  */
-@Getter
+@Data
 @AllArgsConstructor
 public class AuthenticationVo {
 

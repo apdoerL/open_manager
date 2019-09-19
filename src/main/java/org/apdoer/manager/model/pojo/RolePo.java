@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 角色
@@ -29,5 +30,5 @@ public class RolePo implements Serializable {
 
     private Byte enabled;
 
-    private Long createTime;
+    private Date createTime;
 }

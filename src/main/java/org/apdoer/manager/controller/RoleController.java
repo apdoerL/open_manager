@@ -1,97 +1,118 @@
-//package org.apdoer.manager.controller;
-//
-//import cn.hutool.core.lang.Dict;
-//import org.apdoer.manager.annotations.SystemControllerLog;
-//import org.apdoer.manager.exception.BadRequestException;
-//import org.apdoer.manager.model.pojo.RolePo;
-//import org.apdoer.manager.service.RoleService;
-//import org.apdoer.manager.utils.SecurityUtils;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.data.domain.Pageable;
-//import org.springframework.data.domain.Sort;
-//import org.springframework.data.web.PageableDefault;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
-//import org.springframework.validation.annotation.Validated;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.Collections;
-//import java.util.List;
-//import java.util.stream.Collectors;
-//
-///**
-// * @author apdoer
-// * @date 2018-12-03
-// */
-//@RestController
-//@RequestMapping("api")
-//public class RoleController {
-//
-//    @Autowired
-//    private RoleService roleService;
-//
-//    private static final String ENTITY_NAME = "role";
-//
-//    /**
-//     * 获取单个role
-//     * @param id
-//     * @return
-//     */
-//    @GetMapping(value = "/roles/{id}")
-//    @PreAuthorize("hasAnyRole('ADMIN','ROLES_ALL','ROLES_SELECT')")
-//    public ResponseEntity getRoles(@PathVariable Long id){
-//        return new ResponseEntity(roleService.findById(id), HttpStatus.OK);
-//    }
-//
-//    /**
-//     * 返回全部的角色，新增用户时下拉选择
-//     * @return
-//     */
-//    @GetMapping(value = "/roles/all")
-//    @PreAuthorize("hasAnyRole('ADMIN','ROLES_ALL','USER_ALL','USER_CREATE','USER_EDIT')")
-//    public ResponseEntity getAll(@PageableDefault(value = 2000, sort = {"level"}, direction = Sort.Direction.ASC) Pageable pageable){
-//        return new ResponseEntity(roleService.queryAll(pageable),HttpStatus.OK);
-//    }
-//
-//    @SystemControllerLog("查询角色")
-//    @GetMapping(value = "/roles")
-//    @PreAuthorize("hasAnyRole('ADMIN','ROLES_ALL','ROLES_SELECT')")
-//    public ResponseEntity getRoles(CommonQueryCriteria criteria, Pageable pageable){
-//        return new ResponseEntity(roleService.queryAll(criteria,pageable),HttpStatus.OK);
-//    }
-//
-//    @GetMapping(value = "/roles/level")
-//    public ResponseEntity getLevel(){
-//        List<Integer> levels = roleService.findByUsers_Id(SecurityUtils.getUserId()).stream().map(RoleSmallDTO::getLevel).collect(Collectors.toList());
-//        return new ResponseEntity(Dict.create().set("level", Collections.min(levels)),HttpStatus.OK);
-//    }
-//
-//    @SystemControllerLog("新增角色")
-//    @PostMapping(value = "/roles")
-//    @PreAuthorize("hasAnyRole('ADMIN','ROLES_ALL','ROLES_CREATE')")
-//    public ResponseEntity create(@Validated @RequestBody RolePo resources){
-//        if (resources.getId() != null) {
-//            throw new BadRequestException("A new "+ ENTITY_NAME +" cannot already have an ID");
-//        }
-//        return new ResponseEntity(roleService.create(resources),HttpStatus.CREATED);
-//    }
-//
-//    @SystemControllerLog("修改角色")
-//    @PutMapping(value = "/roles")
-//    @PreAuthorize("hasAnyRole('ADMIN','ROLES_ALL','ROLES_EDIT')")
-//    public ResponseEntity update(@Validated(RolePo.Update.class) @RequestBody RolePo resources){
-//        roleService.update(resources);
-//        return new ResponseEntity(HttpStatus.NO_CONTENT);
-//    }
-//
-//    @SystemControllerLog("修改角色权限")
-//    @PutMapping(value = "/roles/permission")
-//    @PreAuthorize("hasAnyRole('ADMIN','ROLES_ALL','ROLES_EDIT')")
-//    public ResponseEntity updatePermission(@RequestBody RolePo resources){
-//        roleService.updatePermission(resources,roleService.findById(resources.getId()));
-//        return new ResponseEntity(HttpStatus.NO_CONTENT);
-//    }
+package org.apdoer.manager.controller;
+
+import org.apdoer.manager.annotations.SystemControllerLog;
+import org.apdoer.manager.handler.RoleHandler;
+import org.apdoer.manager.model.dto.PageBean;
+import org.apdoer.manager.model.vo.ResultVo;
+import org.apdoer.manager.model.vo.RoleCreateVo;
+import org.apdoer.manager.model.vo.RoleUpdateVo;
+import org.apdoer.manager.model.vo.RoleVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+
+/**
+ * @author apdoer
+ * @date 2018-12-03
+ */
+@RestController
+@RequestMapping("role")
+public class RoleController {
+
+    @Autowired
+    private RoleHandler roleHandler;
+
+    private static final String ENTITY_NAME = "role";
+
+    /**
+     * 查询角色列表
+     * @param pageBean
+     * @param roleVo
+     * @return
+     */
+    @GetMapping("/roleList")
+    @SystemControllerLog("查询角色列表")
+    public ResultVo queryRolesList(PageBean<RoleVo>pageBean, RoleVo roleVo){
+        return roleHandler.queryRoleList(pageBean,roleVo);
+    }
+
+    /**
+     * 查询所有可用角色,用户选择角色时展示
+     * @return
+     */
+    @GetMapping("/allRole")
+    @SystemControllerLog("查询所有可用角色")
+    public ResultVo queryAllRole(){
+        return roleHandler.queryAllCreatedRole();
+    }
+
+    /**
+     * 新增角色
+     * @param roleCreateVo
+     * @return
+     */
+    @PostMapping("/role")
+    @SystemControllerLog("新增角色")
+    public ResultVo createRole(@RequestBody @Validated RoleCreateVo roleCreateVo){
+        return roleHandler.createRole(roleCreateVo);
+    }
+
+    /**
+     * 更新角色信息
+     * @param roleUpdateVo
+     * @return
+     */
+    @PutMapping("/role")
+    @SystemControllerLog("更新角色信息")
+    public ResultVo updateRole(@RequestBody @Validated RoleUpdateVo roleUpdateVo){
+        return roleHandler.updateRole(roleUpdateVo);
+    }
+
+    /**
+     * 删除角色
+     * @param roleId
+     * @return
+     */
+    @DeleteMapping("/role/{roleId}")
+    @SystemControllerLog("删除角色")
+    public ResultVo deleteRole(@PathVariable("roleId") Integer roleId){
+        return roleHandler.deleteRole(roleId);
+    }
+    /**
+     * 查询单个角色的权限
+     * @param roleId
+     * @return
+     */
+    @GetMapping("/perms/{roleId}")
+    @SystemControllerLog("查询单个角色的权限")
+    public ResultVo getPermsByRoleId(@PathVariable("roleId") Integer roleId){
+        return roleHandler.getRoleById(roleId);
+    }
+
+    /**
+     * 查询权限层级列表
+     * @return
+     */
+    @GetMapping("/permList")
+    @SystemControllerLog("查询权限层级列表")
+    public ResultVo getPermLevel(){
+        return roleHandler.queryPermLevel();
+    }
+
+
+    /**
+     * 更新角色权限
+     * @param rolePermUpdateVo
+     * @return
+     */
+    @PutMapping("/perm")
+    @SystemControllerLog("更新角色权限")
+    public ResultVo updateRolePerm(RolePermUpdateVo rolePermUpdateVo){
+        return roleHandler.updateRolePerm(rolePermUpdateVo);
+    }
+
+
 //
 //    @SystemControllerLog("修改角色菜单")
 //    @PutMapping(value = "/roles/menu")
@@ -100,12 +121,5 @@
 //        roleService.updateMenu(resources,roleService.findById(resources.getId()));
 //        return new ResponseEntity(HttpStatus.NO_CONTENT);
 //    }
-//
-//    @SystemControllerLog("删除角色")
-//    @DeleteMapping(value = "/roles/{id}")
-//    @PreAuthorize("hasAnyRole('ADMIN','ROLES_ALL','ROLES_DELETE')")
-//    public ResponseEntity delete(@PathVariable Long id){
-//        roleService.delete(id);
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
-//}
+
+}

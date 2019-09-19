@@ -1,24 +1,23 @@
 package org.apdoer.manager.exception;
 
-import org.springframework.http.HttpStatus;
+import lombok.Data;
+import org.apdoer.manager.enums.ExceptionCodeEnum;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
- * @author Li
+ * @author apdoer
  * @version 1.0
  * @date 2019/9/16 18:27
  */
+@Data
 public class QueryMysqlException extends RuntimeException {
 
-    private Integer status = INTERNAL_SERVER_ERROR.value();
+    private ExceptionCodeEnum exceptionCodeEnum;
 
-    public QueryMysqlException(String msg){
-        super(msg);
-    }
 
-    public QueryMysqlException(HttpStatus status, String msg){
-        super(msg);
-        this.status = status.value();
+
+    public QueryMysqlException(ExceptionCodeEnum exceptionCodeEnum){
+        super();
+        this.exceptionCodeEnum = exceptionCodeEnum;
     }
 }

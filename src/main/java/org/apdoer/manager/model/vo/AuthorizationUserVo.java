@@ -1,7 +1,6 @@
 package org.apdoer.manager.model.vo;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
@@ -9,8 +8,9 @@ import javax.validation.constraints.NotBlank;
  * @author apdoer
  * @date 2018-11-30
  */
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AuthorizationUserVo {
 
     @NotBlank
@@ -19,9 +19,9 @@ public class AuthorizationUserVo {
     @NotBlank
     private String password;
 
-    private String code;
+    @NotBlank
+    private String googleCode;
 
-    private String uuid = "";
 
     @Override
     public String toString() {

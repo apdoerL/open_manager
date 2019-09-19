@@ -6,10 +6,16 @@ package org.apdoer.manager.service;
 //import org.springframework.cache.annotation.Cacheable;
 //import org.springframework.data.domain.Pageable;
 
+import org.apdoer.manager.model.dto.PageBean;
 import org.apdoer.manager.model.pojo.BizUserPo;
+import org.apdoer.manager.model.pojo.RolePo;
+import org.apdoer.manager.model.vo.ResultVo;
+import org.apdoer.manager.model.vo.UserVo;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author apdoer
@@ -27,18 +33,28 @@ public interface UserService {
 
     /***
      * 获取用户权限
-     * @param userId userId
-     * @return r
+     * @param roleIds userIds 该方法需要加缓存
+     * @return perms
      */
-    List<String> getPermissionList(Integer userId);
+    List<String> getPermissionList(Integer roleIds);
 
     /**
-     * 根据userId 查询角色
+     * 根据userId 查询角色  该方法需要加缓存
      * @param userId userId
      * @return r
      */
-    List<Integer> queryRolesByUserId(Integer userId);
+    List<Integer> queryRolesByUserId(Long userId);
 
+    /**
+     * 根据userid 查询rolepos
+     * @param id userid
+     * @return rolepos
+     */
+    List<RolePo> queryRolePosByUserId(Long id);
+
+
+
+//    @Cacheable(cacheManager = "webRedisCacheManager", value = "USER_NAME",key = "'BIZ_USER_PERMS:'+#user.username")
 
 //
 ////    /**

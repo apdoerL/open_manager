@@ -2,21 +2,24 @@ package org.apdoer.manager.config;
 
 
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Description 线程管理
- * created by li 2019/08/26
+ * @description 线程管理
+ * created by apdoer 2019/08/26
  */
 public class OpenManagerThreadPool {
 	
 	private static OpenManagerThreadPool openManagerThreadPool;
-	
-	// default initial capacity size
+
+	/**
+	 * default initial capacity size
+	 */
 	private final static int INITIAL_CAPACITY          = 500000;
-	private final static int DEFAULT_CORE_POOLSIZE     = 20;
-	private final static int DEFAULT_MAX_POOLSIZE 	   = 20;
+	private final static int DEFAULT_CORE_POOLSIZE     = 10;
+	private final static int DEFAULT_MAX_POOLSIZE 	   = 50;
 	private final static long DEFAULT_KEEP_ALIVE_TIME  = 10L;
 	
 	private ThreadPoolExecutor threadPoolExecutor;

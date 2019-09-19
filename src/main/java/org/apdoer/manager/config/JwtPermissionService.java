@@ -1,39 +1,50 @@
-//package org.apdoer.manager.config;
-//
-//import org.apdoer.manager.model.pojo.RolePo;
-//import org.apdoer.manager.repository.RoleRepository;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.cache.annotation.CacheConfig;
-//import org.springframework.cache.annotation.Cacheable;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.authority.SimpleGrantedAuthority;
-//import org.springframework.stereotype.Component;
-//
-//import java.util.Collection;
-//import java.util.Set;
-//import java.util.stream.Collectors;
-//
-//@Component
-//@CacheConfig(cacheNames = "role")
-//public class JwtPermissionService {
-//
-//    @Autowired
-//    private RoleRepository roleRepository;
-//
-//    /**
-//     * key的名称如有修改，请同步修改 UserServiceImpl 中的 update 方法
-//     * @param user
-//     * @return
-//     */
-//    @Cacheable(key = "'loadPermissionByUser:' + #p0.username")
-//    public Collection<GrantedAuthority> mapToGrantedAuthorities(UserDTO user) {
-//
-//        System.out.println("--------------------loadPermissionByUser:" + user.getUsername() + "---------------------");
-//
-//        Set<RolePo> roles = roleRepository.findByUsers_Id(user.getId());
-//
-//        return roles.stream().flatMap(role -> role.getPermissions().stream())
-//                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
-//                .collect(Collectors.toList());
-//    }
-//}
+package org.apdoer.manager.config;
+
+import org.apdoer.manager.model.pojo.BizUserPo;
+import org.apdoer.manager.model.pojo.RolePo;
+import org.apdoer.manager.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * @author apdoer
+ */
+@Component
+public class JwtPermissionService {
+    private UserService userService;
+
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+
+
+
+    /**
+     *
+     * @param user user
+     * @return perms
+     */
+    public Collection<GrantedAuthority> getAuthoritis(BizUserPo user) {
+        List<RolePo> rolePos = userService.queryRolePosByUserId(user.getId());
+        HashSet<GrantedAuthority> authorize = new HashSet<>(rolePos.size());
+        rolePos.forEach(var-> authorize.add(new SimpleGrantedAuthority(var.getName())));
+        return authorize;
+    }
+
+    public Set<String> getPerms(BizUserPo user) {
+        List<Integer> roleIds = userService.queryRolesByUserId(user.getId());
+        Set<String> perms = new HashSet<>();
+        roleIds.forEach(roleId->perms.addAll(userService.getPermissionList(roleId)));
+        return perms;
+    }
+}

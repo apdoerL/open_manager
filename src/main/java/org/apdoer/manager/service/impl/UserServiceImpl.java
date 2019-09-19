@@ -1,27 +1,19 @@
 package org.apdoer.manager.service.impl;
-//
-//import org.apdoer.manager.exception.EntityExistException;
-//import org.apdoer.manager.exception.EntityNotFoundException;
-//import org.apdoer.manager.mapper.UserMapper;
-//import org.apdoer.manager.model.pojo.BizUserPo;
-//import org.apdoer.manager.repository.UserRepository;
-//import org.apdoer.manager.service.RedisService;
-//import org.apdoer.manager.utils.PageUtil;
-//import org.apdoer.manager.utils.QueryHelper;
-//import org.apdoer.manager.utils.ValidationUtil;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.data.domain.Page;
-//import org.springframework.data.domain.Pageable;
 import lombok.extern.slf4j.Slf4j;
+import org.apdoer.manager.enums.ExceptionCodeEnum;
+import org.apdoer.manager.exception.QueryMysqlException;
+import org.apdoer.manager.mapper.RoleMapper;
 import org.apdoer.manager.mapper.UserMapper;
+
 import org.apdoer.manager.model.pojo.BizUserPo;
-import org.apdoer.manager.service.UserService;
+import org.apdoer.manager.model.pojo.RolePo;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-//import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 
 /**
  * @author apdoer
@@ -31,7 +23,12 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
+    @Autowired
+    public void setRoleMapper(RoleMapper roleMapper) {
+        this.roleMapper = roleMapper;
+    }
 
+    RoleMapper roleMapper;
 
 
 
@@ -49,23 +46,45 @@ public class UserServiceImpl implements UserService {
             return userMapper.selectOne(BizUserPo.builder().username(username).build());
         }catch (Exception e){
             log.error("query mysql error;query user by name",e);
-            throw new RuntimeException(e);
+            throw new QueryMysqlException(ExceptionCodeEnum.QUERY_MYSQL_ERROR);
         }
     }
 
     @Override
-    public List<String> getPermissionList(Integer userId) {
-        return null;
+    @Cacheable(cacheManager = "webRedisCacheManager",value = "COMMON",key = "'COMMON_queryRolePermList_'+#roleId.toString()")
+    public List<String> getPermissionList(Integer roleId) {
+        try {
+            return userMapper.queryPermsByRoleId(roleId);
+        }catch (Exception e){
+            throw new QueryMysqlException(ExceptionCodeEnum.QUERY_MYSQL_ERROR);
+        }
+    }
+
+
+    @Override
+    @Cacheable(cacheManager = "webRedisCacheManager",value = "COMMON",key = "'COMMON_queryUserRole_'+#userId.toString()")
+    public List<Integer> queryRolesByUserId(Long userId) {
+        try{
+            return userMapper.queryRolesByUserId(userId);
+        }catch (Exception e){
+            log.error("query mysql error,query roles by userId",e);
+            throw new QueryMysqlException(ExceptionCodeEnum.QUERY_MYSQL_ERROR);
+        }
     }
 
     @Override
-    public List<Integer> queryRolesByUserId(Integer userId) {
-        return null;
+    @Cacheable(cacheManager = "webRedisCacheManager",value = "COMMON",key = "'COMMON_queryUserRolePo_'+#id.toString()")
+    public List<RolePo> queryRolePosByUserId(Long id) {
+        try {
+            return userMapper.queryRoleposByUserId(id);
+        }catch (Exception e){
+            log.error("query mysql error,query rolepos by userid",e);
+            throw new QueryMysqlException(ExceptionCodeEnum.QUERY_MYSQL_ERROR);
+        }
     }
-//
-//    @Autowired
-//    private UserRepository userRepository;
-//
+
+
+
 
 //
 //    @Autowired

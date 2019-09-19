@@ -1,7 +1,8 @@
 package org.apdoer.manager.interceptor;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author apdoer
  */
 @Component
-public class RequiresPermissionsInterceptorService implements HandlerInterceptor {
+public class RequiresPermissionsInterceptor implements HandlerInterceptor {
     private SecurityUtils securityUtils;
     private UserService userService;
 
@@ -81,7 +82,7 @@ public class RequiresPermissionsInterceptorService implements HandlerInterceptor
             //设置了权限控制
 			LogicalEnum logical = requiredPermission.logical();
 
-			List<String> permissionList = this.getUserPermissionList();
+			Set<String> permissionList = getUserPermissionList();
 			if (null == permissionList || permissionList.size() == 0) {
                 //个人无权限
 				return false;
@@ -110,14 +111,16 @@ public class RequiresPermissionsInterceptorService implements HandlerInterceptor
 		}
 	}
 
-	private List<String> getUserPermissionList() {
+	private Set<String> getUserPermissionList() {
 		Object userIdObject = this.securityUtils.getCurrentUserId();
 		if (null == userIdObject) {
 			return null;
 		} else {
-			List<String> permissionPoList = this.userService.getPermissionList(new Integer(userIdObject.toString()));
-			if (!CollectionUtils.isEmpty(permissionPoList)) {
-                return new ArrayList<>(permissionPoList);
+			List<Integer> roleIds = userService.queryRolesByUserId(Long.valueOf(userIdObject.toString()));
+			HashSet<String> perms = new HashSet<>();
+			roleIds.forEach(roleId-> perms.addAll(userService.getPermissionList(roleId)));
+			if (!CollectionUtils.isEmpty(perms)) {
+				return perms;
 			} else {
 				return null;
 			}

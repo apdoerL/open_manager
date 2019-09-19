@@ -80,3 +80,5 @@ generator:
 #是否开启 swagger-ui
 swagger:
   enabled: true
+manager:
+  mock: true

@@ -1,7 +1,11 @@
 package org.apdoer.manager.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.apdoer.manager.common.BaseMapper;
 import org.apdoer.manager.model.pojo.BizUserPo;
+import org.apdoer.manager.model.pojo.RolePo;
+
+import java.util.List;
 
 /**
  * @author apdoer
@@ -9,4 +13,26 @@ import org.apdoer.manager.model.pojo.BizUserPo;
  */
 public interface UserMapper extends BaseMapper<BizUserPo> {
 
+
+
+    /**
+     * 查询该用户的角色
+     * @param userId userId
+     * @return r
+     */
+    List<Integer> queryRolesByUserId(@Param("userId") Long userId);
+
+    /**
+     *  根据角色id查询权限集合
+     * @param roleId roleID
+     * @return r
+     */
+    List<String> queryPermsByRoleId(@Param("roleId") Integer roleId);
+
+    /**
+     * 根据角色查询用户角色对象
+     * @param userId userid
+     * @return role objs
+     */
+    List<RolePo> queryRoleposByUserId(@Param("userId") Long userId);
 }

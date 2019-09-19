@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Serializable;
 
+/**
+ * @author apdoer
+ */
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
 
@@ -22,5 +25,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
          * 当用户尝试访问安全的REST资源而不提供任何凭据时，将调用此方法发送401 响应
          */
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException==null?"Unauthorized":authException.getMessage());
+//        httpServletResponse.getWriter().write(JSON.toJSONString(responseBody));
     }
 }
