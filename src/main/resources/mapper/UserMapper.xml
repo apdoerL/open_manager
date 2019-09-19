@@ -14,9 +14,6 @@
         <result column="trade_password" jdbcType="VARCHAR" property="tradePassword" />
         <result column="login_pass_grade" jdbcType="INTEGER" property="loginPassGrade" />
         <result column="google_validate" jdbcType="INTEGER" property="googleValidate" />
-        <result column="avoid_fishing_code" jdbcType="VARCHAR" property="avoidFishingCode" />
-        <result column="trade_safe" jdbcType="INTEGER" property="tradeSafe" />
-        <result column="last_trade_time" jdbcType="TIMESTAMP" property="lastTradeTime" />
     </resultMap>
 
     <resultMap id="roleMap" type="org.apdoer.manager.model.pojo.RolePo">

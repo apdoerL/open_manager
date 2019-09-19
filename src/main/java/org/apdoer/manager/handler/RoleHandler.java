@@ -1,10 +1,7 @@
 package org.apdoer.manager.handler;
 
 import org.apdoer.manager.model.dto.PageBean;
-import org.apdoer.manager.model.vo.ResultVo;
-import org.apdoer.manager.model.vo.RoleCreateVo;
-import org.apdoer.manager.model.vo.RoleUpdateVo;
-import org.apdoer.manager.model.vo.RoleVo;
+import org.apdoer.manager.model.vo.*;
 
 /**
  * @author Li
@@ -39,4 +36,31 @@ public interface RoleHandler {
      * @return
      */
     ResultVo updateRole(RoleUpdateVo roleUpdateVo);
+
+    /**
+     * 删除角色
+     * @param roleId
+     * @return
+     */
+    ResultVo deleteRole(Integer roleId);
+
+    /**
+     * 查询指定角色的权限
+     * @param roleId
+     * @return
+     */
+    ResultVo getRoleById(Integer roleId);
+
+    /**
+     * 查询所有可用的权限层级列表
+     * @return
+     */
+    ResultVo queryPermLevel();
+
+    /**
+     * 更新角色权限
+     * @param rolePermUpdateVo
+     * @return
+     */
+    ResultVo updateRolePerm(RolePermUpdateVo rolePermUpdateVo);
 }

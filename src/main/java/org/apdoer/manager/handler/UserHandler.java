@@ -34,10 +34,10 @@ public interface UserHandler {
 
     /**
      * 删除后台用户
-     * @param userVo
+     * @param userId
      * @return
      */
-    ResultVo deletUser(UserVo userVo);
+    ResultVo deletUser(Long userId);
 
     /**
      * 更新后台用户密码

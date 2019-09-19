@@ -67,10 +67,7 @@ public class UserHandlerImpl implements UserHandler {
     }
 
     @Override
-    public ResultVo deletUser(UserVo userVo) {
-        if (userVo == null || userVo.getUserId() == null){
-            return ResultVoBuildUtils.buildResultVo(ExceptionCodeEnum.REQUEST_PARAM_INVALID.getCode(),ExceptionCodeEnum.REQUEST_PARAM_INVALID.getValue());
-        }
+    public ResultVo deletUser(Long userId) {
         // todo
         return null;
     }

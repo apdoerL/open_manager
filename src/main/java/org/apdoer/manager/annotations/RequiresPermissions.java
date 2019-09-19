@@ -4,6 +4,9 @@ import org.apdoer.manager.enums.LogicalEnum;
 
 import java.lang.annotation.*;
 
+/**
+ * @author apdoer
+ */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

@@ -3,10 +3,7 @@ package org.apdoer.manager.controller;
 import org.apdoer.manager.annotations.SystemControllerLog;
 import org.apdoer.manager.handler.RoleHandler;
 import org.apdoer.manager.model.dto.PageBean;
-import org.apdoer.manager.model.vo.ResultVo;
-import org.apdoer.manager.model.vo.RoleCreateVo;
-import org.apdoer.manager.model.vo.RoleUpdateVo;
-import org.apdoer.manager.model.vo.RoleVo;
+import org.apdoer.manager.model.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +20,6 @@ public class RoleController {
     @Autowired
     private RoleHandler roleHandler;
 
-    private static final String ENTITY_NAME = "role";
 
     /**
      * 查询角色列表
@@ -108,7 +104,7 @@ public class RoleController {
      */
     @PutMapping("/perm")
     @SystemControllerLog("更新角色权限")
-    public ResultVo updateRolePerm(RolePermUpdateVo rolePermUpdateVo){
+    public ResultVo updateRolePerm(@Validated @RequestBody RolePermUpdateVo rolePermUpdateVo){
         return roleHandler.updateRolePerm(rolePermUpdateVo);
     }
 

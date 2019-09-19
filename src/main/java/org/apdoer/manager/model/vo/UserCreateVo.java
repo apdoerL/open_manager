@@ -13,5 +13,6 @@ import lombok.*;
 @Builder
 @ToString
 public class UserCreateVo {
+
     private String username;
 }

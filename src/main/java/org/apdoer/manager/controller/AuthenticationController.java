@@ -23,20 +23,26 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("auth")
 public class AuthenticationController {
-
+    private JwtTokenUtil jwtTokenUtil;
+    private UserDetailsService userDetailsService;
     @Value("${jwt.header}")
     private String tokenHeader;
-
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    @Qualifier("jwtUserDetailsService")
-    private UserDetailsService userDetailsService;
-
-
     @Value("${manager.mock}")
     private boolean mock;
+
+
+
+    @Autowired
+    public void setJwtTokenUtil(JwtTokenUtil jwtTokenUtil) {
+        this.jwtTokenUtil = jwtTokenUtil;
+    }
+    @Autowired
+    @Qualifier("jwtUserDetailsService")
+    public void setUserDetailsService(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+
     /**
      * 登录授权
      * @param authorizationUser

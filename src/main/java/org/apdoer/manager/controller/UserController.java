@@ -73,13 +73,13 @@ public class UserController {
 
     /**
      * 删除后台用户
-     * @param userVo
+     * @param userId
      * @return
      */
-    @DeleteMapping("/user")
+    @DeleteMapping("/user/{userId}")
     @SystemControllerLog("删除后台用户")
-    public ResultVo deleteUser(@Validated @RequestBody UserVo userVo){
-        return userHandler.deletUser(userVo);
+    public ResultVo deleteUser( @PathVariable("userId") Long userId){
+        return userHandler.deletUser(userId);
     }
 
 
