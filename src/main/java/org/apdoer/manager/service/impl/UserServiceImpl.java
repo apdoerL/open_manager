@@ -8,6 +8,7 @@ import org.apdoer.manager.mapper.UserMapper;
 import org.apdoer.manager.model.pojo.BizUserPo;
 import org.apdoer.manager.model.pojo.RolePo;
 
+import org.apdoer.manager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -85,17 +86,6 @@ public class UserServiceImpl implements UserService {
 
 
 
-
-//
-//    @Autowired
-//    private RedisService redisService;
-//
-//    @Override
-//    public Object queryAll(UserQueryCriteria criteria, Pageable pageable) {
-//        Page<BizUserPo> page = userRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelper.getPredicate(root,criteria,criteriaBuilder),pageable);
-//        return PageUtil.toPage(page.map(userMapper::toDto));
-//    }
-//
 //    @Override
 //    public UserDTO findById(long id) {
 //        Optional<BizUserPo> user = userRepository.findById(id);

@@ -11,6 +11,12 @@ public class ManagerConstant {
 
     public static final String RESET_MAIL = "重置邮箱";
 
+    public static final int STATUS_DELETE = 2;
+
+    public static final int STATUS_ENABLED = 1;
+
+    public static final int STATUS_DISABLED = 0;
+
     /**
      * 常用接口
      */

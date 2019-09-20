@@ -106,17 +106,4 @@ public class UserController {
         return userHandler.updateAvator(file);
     }
 
-
-//
-//    /**
-//     * 如果当前用户的角色级别低于创建用户的角色级别，则抛出权限不足的错误
-//     * @param resources
-//     */
-//    private void checkLevel(BizUserPo resources) {
-//        Integer currentLevel =  Collections.min(roleService.findByUsers_Id(SecurityUtils.getUserId()).stream().map(RoleSmallDTO::getLevel).collect(Collectors.toList()));
-//        Integer optLevel = roleService.findByRoles(resources.getRoles());
-//        if (currentLevel > optLevel) {
-//            throw new BadRequestException("角色权限不足");
-//        }
-//    }
 }
