@@ -1,6 +1,9 @@
 package org.apdoer.manager.model.vo;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 /**
  * @author apdoer
@@ -13,5 +16,20 @@ import lombok.*;
 @Builder
 @ToString
 public class OperationRecordVo {
+
+    private Integer id;
+
+    private String account;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date operTime;
+
+    private String ipAddress;
+
+    private String location;
+
+    private String operUrl;
+
+    private String operType;
 
 }

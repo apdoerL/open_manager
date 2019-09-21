@@ -13,4 +13,9 @@ import lombok.*;
 @Builder
 @ToString
 public class UserUpdateVo {
+    private Integer userId;
+
+    private String username;
+
+    private String phone;
 }

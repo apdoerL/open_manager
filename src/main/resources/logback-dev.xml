@@ -187,7 +187,7 @@
 
 
     <!--普通日志输出到控制台-->
-    <root level="debug">
+    <root level="info">
 <!--        <appender-ref ref="console" />-->
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="file-debug-asysc"/>

@@ -10,6 +10,7 @@ import org.apdoer.manager.model.dto.PageBean;
 import org.apdoer.manager.model.pojo.BizUserPo;
 import org.apdoer.manager.model.pojo.RolePo;
 import org.apdoer.manager.model.vo.ResultVo;
+import org.apdoer.manager.model.vo.UserCreateVo;
 import org.apdoer.manager.model.vo.UserVo;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
@@ -52,6 +53,18 @@ public interface UserService {
      */
     List<RolePo> queryRolePosByUserId(Long id);
 
+    /**
+     * 添加用户并返回主键
+     * @param userCreateVo
+     */
+    void addUserAndSelectKey(UserCreateVo userCreateVo);
+
+    /**
+     * 添加用户和角色关系映射
+     * @param id id
+     * @param roleId roleId
+     */
+    void addUserRoleRelation(Integer id, Integer roleId);
 
 
 //    @Cacheable(cacheManager = "webRedisCacheManager", value = "USER_NAME",key = "'BIZ_USER_PERMS:'+#user.username")

@@ -4,6 +4,7 @@ import org.apdoer.manager.check.RoleCheckService;
 import org.apdoer.manager.model.dto.PageBean;
 import org.apdoer.manager.model.vo.ResultVo;
 import org.apdoer.manager.model.vo.RoleCreateVo;
+import org.apdoer.manager.model.vo.RoleUpdateVo;
 import org.apdoer.manager.model.vo.RoleVo;
 import org.apdoer.manager.utils.ResultVoBuildUtils;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,12 @@ public class RoleCheckServiceImpl implements RoleCheckService {
 
     @Override
     public ResultVo checkRoleCreateParam(RoleCreateVo roleCreateVo) {
+        // todo
+        return ResultVoBuildUtils.buildSuccessResultVo();
+    }
+
+    @Override
+    public ResultVo checkRoleUpdateParam(RoleUpdateVo roleUpdateVo) {
         // todo
         return ResultVoBuildUtils.buildSuccessResultVo();
     }

@@ -1,7 +1,9 @@
 package org.apdoer.manager.utils;
 
 import cn.hutool.json.JSONObject;
+import org.apdoer.manager.enums.ExceptionCodeEnum;
 import org.apdoer.manager.exception.BadRequestException;
+import org.apdoer.manager.exception.UnAuthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +22,7 @@ public class SecurityUtil {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             return (UserDetails) principal;
         } catch (Exception e) {
-            throw new BadRequestException(HttpStatus.UNAUTHORIZED, "登录状态过期");
+            throw new UnAuthorizedException(ExceptionCodeEnum.UNAUTHORIZED_USERS);
         }
     }
 

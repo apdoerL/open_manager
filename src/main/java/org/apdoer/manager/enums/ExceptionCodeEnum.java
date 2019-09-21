@@ -3,6 +3,7 @@ package org.apdoer.manager.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Description;
 
 import java.util.*;
 
@@ -24,17 +25,18 @@ public enum ExceptionCodeEnum {
 	FAIL( 101080400, "fail" ),
 
 	/*请求超时*/
-	REQUEST_TIMEOUT( 101080401, "request timeout" ),
+	REQUEST_TIMEOUT( 101080401, "request timeout"),
 
 	/*未知异常*/
 	UNKNOWN_EXCEPTION_CODE( 101080402, "unknown_exception_code" ),
 
-	/*谷歌验证码错误*/,
-	GOOGLE_AUTHENTICATION_CODE_ERROR( 101080403, "google authentication code error" )
-	/*无权限用户*/,
+	/*谷歌验证码错误*/
+	GOOGLE_AUTHENTICATION_CODE_ERROR( 101080403, "google authentication code error" ),
+	/*无权限用户*/
 	UNAUTHORIZED_USERS( 101080404, "unauthorized users" ),
 	/*查询mysql异常*/
 	QUERY_MYSQL_ERROR( 102210705, "query mysql error" ),
+	UPDATE_MYSQL_ERROR( 102210706, "update mysql error" ),
 
 	/**
 	 * 请求参数验证 0700-0899

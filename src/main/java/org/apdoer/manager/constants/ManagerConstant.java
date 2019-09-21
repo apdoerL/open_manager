@@ -16,6 +16,8 @@ public class ManagerConstant {
     public static final int STATUS_ENABLED = 1;
 
     public static final int STATUS_DISABLED = 0;
+    /*最大分页数*/
+    public static final int MAX_PAGE_SIZE = 100;
 
     /**
      * 常用接口

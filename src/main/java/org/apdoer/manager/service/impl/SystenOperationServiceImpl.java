@@ -1,11 +1,16 @@
 package org.apdoer.manager.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apdoer.manager.enums.ExceptionCodeEnum;
+import org.apdoer.manager.exception.QueryMysqlException;
 import org.apdoer.manager.mapper.OperationRecordMapper;
 import org.apdoer.manager.model.pojo.RecordPo;
+import org.apdoer.manager.model.vo.OperationRecordVo;
 import org.apdoer.manager.service.SystenOperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Li
@@ -24,6 +29,16 @@ public class SystenOperationServiceImpl implements SystenOperationService {
 
     @Override
     public void insertRecord(RecordPo recordPo) {
+        recordMapper.insert(recordPo);
+    }
 
+    @Override
+    public List<OperationRecordVo> queryAllRecords(OperationRecordVo operationRecordVo) {
+        try {
+            return recordMapper.queryRecords(operationRecordVo);
+        }catch (Exception e){
+            log.error("query system records error;reason:,",e);
+            throw new QueryMysqlException(ExceptionCodeEnum.QUERY_MYSQL_ERROR);
+        }
     }
 }

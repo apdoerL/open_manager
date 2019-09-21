@@ -2,10 +2,12 @@ package org.apdoer.manager.handler.impl;
 
 import org.apdoer.manager.check.UserCheckService;
 import org.apdoer.manager.enums.ExceptionCodeEnum;
+import org.apdoer.manager.handler.RedisHandler;
 import org.apdoer.manager.handler.UserHandler;
 import org.apdoer.manager.model.dto.PageBean;
 import org.apdoer.manager.model.vo.*;
 import org.apdoer.manager.service.UserService;
+import org.apdoer.manager.utils.EncryptUtils;
 import org.apdoer.manager.utils.ResultVoBuildUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,10 +22,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserHandlerImpl implements UserHandler {
     private UserService userService;
     private UserCheckService userCheckService;
+    private RedisHandler redisHandler;
 
-
-
-
+    @Autowired
+    public void setRedisHandler(RedisHandler redisHandler) {
+        this.redisHandler = redisHandler;
+    }
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -52,8 +56,15 @@ public class UserHandlerImpl implements UserHandler {
         if (resultVo == null || resultVo.getCode() != ExceptionCodeEnum.SUCCESS.getCode()){
             return resultVo;
         }
-        // todo
-        return null;
+        //加密密码
+        userCreateVo.setPassword(EncryptUtils.encryptPassword(userCreateVo.getPassword()));
+        //添加用户
+        userService.addUserAndSelectKey(userCreateVo);
+        //维护角色
+        if(userCreateVo.getRoleId() != null){
+            userService.addUserRoleRelation(userCreateVo.getId(),userCreateVo.getRoleId());
+        }
+        return ResultVoBuildUtils.buildSuccessResultVo();
     }
 
     @Override

@@ -41,4 +41,13 @@ public class RecordPo implements Serializable {
 
 	private Date				createTime;
 
+    public RecordPo(String user, String logUrl, String logIp, String logAddress, String operType, String recordType, Date date) {
+    	this.account = user;
+    	this.url = logUrl;
+    	this.ip = logIp;
+    	this.location = logAddress;
+    	this.operType = operType;
+    	this.recordType = recordType;
+    	this.createTime = date;
+    }
 }

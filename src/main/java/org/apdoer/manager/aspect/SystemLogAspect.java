@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apdoer.manager.annotations.SystemControllerLog;
 import org.apdoer.manager.config.OpenManagerThreadPool;
 import org.apdoer.manager.model.pojo.RecordPo;
+import org.apdoer.manager.model.vo.AuthorizationUserVo;
 import org.apdoer.manager.service.SystenOperationService;
 import org.apdoer.manager.utils.NetUtils;
 import org.apdoer.manager.utils.SecurityUtil;
@@ -13,11 +14,14 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Spring AOP实现日志管理
@@ -48,7 +52,7 @@ public class SystemLogAspect {
      */
     @Pointcut("@annotation(org.apdoer.manager.annotations.SystemControllerLog)")
     public void controllerAspect() {
-        log.info("========controllerAspect===========");
+        // 该方法无方法体,主要为了让同类中其他方法使用此切入点
     }
 
     /**
@@ -59,19 +63,22 @@ public class SystemLogAspect {
     @After("controllerAspect()")
     public void after(JoinPoint joinPoint) {
         try {
-            String user = SecurityUtil.getUsername();
+            //可以优化,后面再做
+//            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String user;
+            //防止在登录的时候获取不到当前用户信息
+            Map<String, String> map = getControllerMethodInfo(joinPoint);
+            if (map.get("method").equals("login")){
+                user = map.get("username");
+            }else {
+                user = SecurityUtil.getUsername();
+            }
             String logUrl = request.getRequestURI();
             String logIp = NetUtils.getIpAdrress(request);
             String logAddress = NetUtils.getAddByIp(logIp);
-            String operType = null;
-            try {
-                operType = getControllerMethodDescription(joinPoint);
-            } catch (Exception e) {
-                log.error(" get operationType error reason:{}", e);
-            }
+            String operType = map.get("operType");
             // 记录类型 1.登录 2.其他
             String recordType = "用户登陆".equals(operType) ? "1" : "2";
-
             RecordPo recordPo = new RecordPo(user, logUrl, logIp, logAddress, operType, recordType, new Date());
             OpenManagerThreadPool.getInstance().execute(new SaveRecordPoThread(recordPo, systemService));
         } catch (Exception e) {
@@ -86,7 +93,7 @@ public class SystemLogAspect {
         private RecordPo recordPo;
         private SystenOperationService systemService;
 
-        public SaveRecordPoThread(RecordPo recordPo, SystenOperationService systemService) {
+        SaveRecordPoThread(RecordPo recordPo, SystenOperationService systemService) {
             this.recordPo = recordPo;
             this.systemService = systemService;
         }
@@ -102,9 +109,10 @@ public class SystemLogAspect {
      *
      * @param joinPoint 切点
      * @return 方法描述
-     * @throws Exception
+     * @throws Exception e
      */
-    private static String getControllerMethodDescription(JoinPoint joinPoint) throws Exception {
+    private static Map<String,String> getControllerMethodInfo(JoinPoint joinPoint) throws Exception {
+        Map<String,String>map = new HashMap<>();
         // 获取目标类名
         String targetName = joinPoint.getTarget().getClass().getName();
         // 获取方法名
@@ -115,9 +123,7 @@ public class SystemLogAspect {
         Class targetClass = Class.forName(targetName);
         // 获取该类中的方法
         Method[] methods = targetClass.getMethods();
-
         String description = "";
-
         for (Method method : methods) {
             if (!method.getName().equals(methodName)) {
                 continue;
@@ -127,9 +133,12 @@ public class SystemLogAspect {
             if (clazzs.length != arguments.length) {
                 continue;
             }
+            map.put("method",method.getName());
+            map.put("username", ((AuthorizationUserVo) arguments[0]).getUsername());
             description = method.getAnnotation(SystemControllerLog.class).value();
+            map.put("operType",description);
         }
-        return description;
+        return map;
     }
 
 }

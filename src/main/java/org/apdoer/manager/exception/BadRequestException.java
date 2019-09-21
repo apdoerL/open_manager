@@ -1,6 +1,7 @@
 package org.apdoer.manager.exception;
 
 import lombok.Getter;
+import org.apdoer.manager.enums.ExceptionCodeEnum;
 import org.springframework.http.HttpStatus;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -13,14 +14,15 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Getter
 public class BadRequestException extends RuntimeException{
 
-    private Integer status = BAD_REQUEST.value();
+    private ExceptionCodeEnum exceptionCodeEnum;
 
     public BadRequestException(String msg){
         super(msg);
     }
 
-    public BadRequestException(HttpStatus status, String msg){
-        super(msg);
-        this.status = status.value();
+
+    public BadRequestException(ExceptionCodeEnum exceptionCodeEnum){
+        super();
+        this.exceptionCodeEnum = exceptionCodeEnum;
     }
 }

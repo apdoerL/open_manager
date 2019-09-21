@@ -13,4 +13,11 @@ import lombok.*;
 @Builder
 @ToString
 public class RoleVo {
+    private Integer id;
+
+    private String name;
+
+    private String desc;
+
+    private Integer enabled;
 }

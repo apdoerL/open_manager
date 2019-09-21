@@ -2,18 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.apdoer.manager.mapper.UserMapper">
     <resultMap id="BaseResultMap" type="org.apdoer.manager.model.pojo.BizUserPo">
-        <id column="id" jdbcType="INTEGER" property="id" />
-        <result column="password" jdbcType="VARCHAR" property="password" />
-        <result column="username" jdbcType="VARCHAR" property="username" />
-        <result column="phone" jdbcType="VARCHAR" property="phone" />
-        <result column="email" jdbcType="VARCHAR" property="email" />
-        <result column="enabled" jdbcType="INTEGER" property="enabled" />
-        <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-        <result column="last_login" jdbcType="TIMESTAMP" property="lastLogin" />
-        <result column="google_code" jdbcType="VARCHAR" property="googleCode" />
-        <result column="trade_password" jdbcType="VARCHAR" property="tradePassword" />
-        <result column="login_pass_grade" jdbcType="INTEGER" property="loginPassGrade" />
-        <result column="google_validate" jdbcType="INTEGER" property="googleValidate" />
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="enabled" jdbcType="INTEGER" property="enabled"/>
+        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="last_login" jdbcType="TIMESTAMP" property="lastLogin"/>
+        <result column="google_code" jdbcType="VARCHAR" property="googleCode"/>
+        <result column="trade_password" jdbcType="VARCHAR" property="tradePassword"/>
+        <result column="login_pass_grade" jdbcType="INTEGER" property="loginPassGrade"/>
+        <result column="google_validate" jdbcType="INTEGER" property="googleValidate"/>
     </resultMap>
 
     <resultMap id="roleMap" type="org.apdoer.manager.model.pojo.RolePo">
@@ -21,9 +21,8 @@
         <id column="name" jdbcType="VARCHAR" property="name"/>
         <id column="role_desc" jdbcType="VARCHAR" property="roleDesc"/>
         <id column="enabled" jdbcType="INTEGER" property="enabled"/>
-        <id column="create_time" jdbcType="TIMESTAMP"  property="createTime"/>
+        <id column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
-
 
 
     <select id="queryRolesByUserId" resultType="java.lang.Integer">
@@ -67,6 +66,14 @@
             AND b.`enabled` =1
             and c.`enabled`=1
     </select>
+    <insert id="insertAndSelectKey" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO biz_user ( username, PASSWORD, avatar, email, phone, google_code, create_time, enabled )
+        VALUES(#{username},#{password},
+            #{avatar},
+        #{email},
+            #{phone},
+        #{googleCode},now(),1)
+    </insert>
 
 
 </mapper>

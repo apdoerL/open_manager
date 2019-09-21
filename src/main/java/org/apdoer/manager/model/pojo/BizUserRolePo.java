@@ -15,25 +15,19 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Builder
-@Table(name = "web_user")
-public class WebUserPo implements Serializable {
-    private static final long serialVersionUID = 8761789725081606023L;
+@ToString
+@Table(name = "biz_user_role")
+public class BizUserRolePo implements Serializable {
+    private static final long serialVersionUID = 252487661705312902L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String username;
+    private Integer userId;
 
-    private String password;
-
-    private String phone;
-
-    private String email;
-
-    private String googleCode;
+    private Integer roleId;
 
     private Integer enabled;
 

@@ -23,10 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 
 /**
- *@Description redis 接口限流
+ *@description redis 接口限流
  *@author apdoer
- *@CreateDate 2019/8/13-22:23
- *@Version 1.0
+ *@version 1.0
  *===============================
 **/
 @Aspect
@@ -38,6 +37,7 @@ public class LimitAspect {
 
     @Pointcut("@annotation(org.apdoer.manager.annotations.Limit)")
     public void pointcut() {
+        // 该方法无方法体,主要为了让同类中其他方法使用此切入点
     }
 
     @Around("pointcut()")

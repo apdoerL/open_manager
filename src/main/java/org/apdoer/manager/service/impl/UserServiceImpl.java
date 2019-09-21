@@ -1,18 +1,24 @@
 package org.apdoer.manager.service.impl;
 import lombok.extern.slf4j.Slf4j;
+import org.apdoer.manager.constants.ManagerConstant;
 import org.apdoer.manager.enums.ExceptionCodeEnum;
 import org.apdoer.manager.exception.QueryMysqlException;
+import org.apdoer.manager.exception.UpdateMysqlException;
+import org.apdoer.manager.mapper.BizUserRoleMapper;
 import org.apdoer.manager.mapper.RoleMapper;
 import org.apdoer.manager.mapper.UserMapper;
 
 import org.apdoer.manager.model.pojo.BizUserPo;
+import org.apdoer.manager.model.pojo.BizUserRolePo;
 import org.apdoer.manager.model.pojo.RolePo;
 
+import org.apdoer.manager.model.vo.UserCreateVo;
 import org.apdoer.manager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -23,6 +29,12 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
+    private BizUserRoleMapper userRoleMapper;
+
+    @Autowired
+    public void setUserRoleMapper(BizUserRoleMapper userRoleMapper) {
+        this.userRoleMapper = userRoleMapper;
+    }
 
     @Autowired
     public void setRoleMapper(RoleMapper roleMapper) {
@@ -84,6 +96,29 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public void addUserAndSelectKey(UserCreateVo userCreateVo) {
+        try {
+            userMapper.insertAndSelectKey(userCreateVo);
+        }catch (Exception e){
+            log.error("insert and select key error,username:{},reason:{}",userCreateVo.getId(),e);
+            throw new UpdateMysqlException(ExceptionCodeEnum.UPDATE_MYSQL_ERROR);
+        }
+    }
+
+    @Override
+    public void addUserRoleRelation(Integer id, Integer roleId) {
+        try {
+            userRoleMapper.insertSelective(BizUserRolePo.builder()
+                    .userId(id)
+                    .roleId(roleId)
+                    .enabled(ManagerConstant.STATUS_ENABLED)
+                    .createTime(new Date()).build());
+        }catch (Exception e){
+            log.error("add user role rela error,userId:{},roleId:{};reason:{}",id,roleId,e);
+            throw new UpdateMysqlException(ExceptionCodeEnum.UPDATE_MYSQL_ERROR);
+        }
+    }
 
 
 //    @Override
