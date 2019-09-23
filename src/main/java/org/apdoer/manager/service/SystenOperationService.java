@@ -23,4 +23,12 @@ public interface SystenOperationService {
      * @return list
      */
     List<OperationRecordVo> queryAllRecords(OperationRecordVo operationRecordVo);
+
+    /**
+     * 查询一段时间段内不同ip的数量
+     * @param toString
+     * @param toString1
+     * @return
+     */
+    Long queryIpCountsByduration(String toString, String toString1);
 }

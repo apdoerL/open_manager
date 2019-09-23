@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * @author Li
+ * @author apdoer
  * @version 1.0
  * @date 2019/9/20 18:56
  */
@@ -38,6 +38,16 @@ public class SystenOperationServiceImpl implements SystenOperationService {
             return recordMapper.queryRecords(operationRecordVo);
         }catch (Exception e){
             log.error("query system records error;reason:,",e);
+            throw new QueryMysqlException(ExceptionCodeEnum.QUERY_MYSQL_ERROR);
+        }
+    }
+
+    @Override
+    public Long queryIpCountsByduration(String toString, String toString1) {
+        try {
+            recordMapper.queryIpCountsByduration(toString,toString1);
+        }catch (Exception e){
+            log.error("query IpCountsByduration error start:{},end:{},reason:{}",toString,toString1,e);
             throw new QueryMysqlException(ExceptionCodeEnum.QUERY_MYSQL_ERROR);
         }
     }

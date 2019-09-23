@@ -37,7 +37,7 @@ public class CommonExceptionHandler {
     @ExceptionHandler(QueryMysqlException.class)
     @ResponseBody
     public ResultVo handleQueryMysqlException(QueryMysqlException e){
-        log.error("exception:",e);
+        log.error("QueryMysqlException:",e);
         return buildResultVo(e.getExceptionCodeEnum());
     }
 
@@ -49,7 +49,7 @@ public class CommonExceptionHandler {
     @ExceptionHandler(UpdateMysqlException.class)
     @ResponseBody
     public ResultVo handleQueryMysqlException(UpdateMysqlException e){
-        log.error("exception:",e);
+        log.error("UpdateMysqlException:",e);
         return buildResultVo(e.getExceptionCodeEnum());
     }
 
@@ -58,24 +58,33 @@ public class CommonExceptionHandler {
      * @param e
      * @return
      */
-    @ExceptionHandler(Exception.class)
-    public ResultVo handleException(Exception e){
-//        log.error("Throwable:{}",e);
-//        OpenManagerException apiError = new OpenManagerException(BAD_REQUEST.value(),e.getMessage());
-//        return ResultVoBuildUtils.buildResultVo(ExceptionCodeEnum.REQUEST_PARAM_INVALID.getCode(),ExceptionCodeEnum.REQUEST_PARAM_INVALID.getValue());
-        return exception(e);
+    @ExceptionHandler(Throwable.class)
+    public ResultVo handleException(Throwable e){
+        log.error("Throwable:",e);
+        return ResultVoBuildUtils.buildResultVo(ExceptionCodeEnum.UNKNOWN_EXCEPTION_CODE.getCode(),ExceptionCodeEnum.UNKNOWN_EXCEPTION_CODE.getValue());
+    }
+
+
+    /**
+     * 处理参数校验异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResultVo handleException(MethodArgumentNotValidException e){
+        log.error("MethodArgumentNotValidException",e);
+        return ResultVoBuildUtils.buildResultVo(ExceptionCodeEnum.REQUEST_PARAM_INVALID.getCode(),e.getBindingResult().getFieldError().getDefaultMessage());
     }
 
     /**
-     * 处理未知异常
+     * 处理未认证异常
      * @param e
      * @return
      */
     @ExceptionHandler(UnAuthorizedException.class)
     public ResultVo handleUnAuthorizedException(UnAuthorizedException e){
-//        log.error("Throwable:{}",e);
-//        OpenManagerException apiError = new OpenManagerException(BAD_REQUEST.value(),e.getMessage());
-        return buildResultVo(e.getExceptionCodeEnum());
+        log.error("UnAuthorizedException:",e);
+        return ResultVoBuildUtils.buildResultVo(ExceptionCodeEnum.UNAUTHORIZED_USERS.getCode(),ExceptionCodeEnum.UNAUTHORIZED_USERS.getValue());
     }
 //    /**
 //     * 处理接口无权访问异常AccessDeniedException
@@ -96,7 +105,7 @@ public class CommonExceptionHandler {
      */
 	@ExceptionHandler(value = BadRequestException.class)
 	public ResultVo badRequestException(BadRequestException e) {
-        log.error("BadRequestException:{}",e);
+        log.error("BadRequestException:",e);
         return buildResultVo(e.getExceptionCodeEnum());
 	}
 
@@ -110,7 +119,6 @@ public class CommonExceptionHandler {
 //        log.error("EntityExistException:{}",e);
 //        OpenManagerException apiError = new OpenManagerException(BAD_REQUEST.value(),e.getMessage());
 //        return buildResultVo(apiError);
-//    }
 
 //    /**
 //     * 处理 EntityNotFound
