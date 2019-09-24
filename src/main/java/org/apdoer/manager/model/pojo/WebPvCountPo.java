@@ -1,6 +1,9 @@
 package org.apdoer.manager.model.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,8 +15,10 @@ import java.sql.Timestamp;
  * @author apdoer
  * @date 2018-12-13
  */
-@Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "web_pv_count")
 public class WebPvCountPo implements Serializable {
 

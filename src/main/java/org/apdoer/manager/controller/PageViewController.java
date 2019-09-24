@@ -32,8 +32,8 @@ public class PageViewController {
 
     @GetMapping("/pv")
     @SystemControllerLog("获取pv数据")
-    public ResultVo getPVData(){
-        return pageViewHandler.getPVData();
+    public ResultVo getPvData(){
+        return pageViewHandler.getPvData();
     }
 
     @GetMapping("/pvData")

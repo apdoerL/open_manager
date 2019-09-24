@@ -64,7 +64,7 @@ public class SystemLogAspect {
     public void after(JoinPoint joinPoint) {
         try {
             //可以优化,后面再做
-//            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String user;
             //防止在登录的时候获取不到当前用户信息
             Map<String, String> map = getControllerMethodInfo(joinPoint);
@@ -134,7 +134,9 @@ public class SystemLogAspect {
                 continue;
             }
             map.put("method",method.getName());
-            map.put("username", ((AuthorizationUserVo) arguments[0]).getUsername());
+            if (method.getName() == "login"){
+                map.put("username", ((AuthorizationUserVo) arguments[0]).getUsername());
+            }
             description = method.getAnnotation(SystemControllerLog.class).value();
             map.put("operType",description);
         }

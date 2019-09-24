@@ -7,6 +7,7 @@ import org.apdoer.manager.model.vo.ResultVo;
 import org.apdoer.manager.utils.ResultVoBuildUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -59,6 +60,7 @@ public class CommonExceptionHandler {
      * @return
      */
     @ExceptionHandler(Throwable.class)
+    @ResponseBody
     public ResultVo handleException(Throwable e){
         log.error("Throwable:",e);
         return ResultVoBuildUtils.buildResultVo(ExceptionCodeEnum.UNKNOWN_EXCEPTION_CODE.getCode(),ExceptionCodeEnum.UNKNOWN_EXCEPTION_CODE.getValue());
@@ -71,6 +73,7 @@ public class CommonExceptionHandler {
      * @return
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseBody
     public ResultVo handleException(MethodArgumentNotValidException e){
         log.error("MethodArgumentNotValidException",e);
         return ResultVoBuildUtils.buildResultVo(ExceptionCodeEnum.REQUEST_PARAM_INVALID.getCode(),e.getBindingResult().getFieldError().getDefaultMessage());
@@ -82,6 +85,7 @@ public class CommonExceptionHandler {
      * @return
      */
     @ExceptionHandler(UnAuthorizedException.class)
+    @ResponseBody
     public ResultVo handleUnAuthorizedException(UnAuthorizedException e){
         log.error("UnAuthorizedException:",e);
         return ResultVoBuildUtils.buildResultVo(ExceptionCodeEnum.UNAUTHORIZED_USERS.getCode(),ExceptionCodeEnum.UNAUTHORIZED_USERS.getValue());
@@ -104,10 +108,18 @@ public class CommonExceptionHandler {
      * @return
      */
 	@ExceptionHandler(value = BadRequestException.class)
+    @ResponseBody
 	public ResultVo badRequestException(BadRequestException e) {
         log.error("BadRequestException:",e);
         return buildResultVo(e.getExceptionCodeEnum());
 	}
+
+	@ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+    @ResponseBody
+	public ResultVo requestMethodHandler(){
+	    log.error("request method error");
+	    return ResultVoBuildUtils.buildResultVo(ExceptionCodeEnum.REQUEST_METHOD_ERROR.getCode(),ExceptionCodeEnum.REQUEST_METHOD_ERROR.getValue());
+    }
 
 //    /**
 //     * 处理 EntityExist

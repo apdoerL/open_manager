@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.apdoer.manager.mapper.WebPvCountMapper">
+    <resultMap id="baseResultMap" type="org.apdoer.manager.model.pojo.WebPvCountPo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="date" jdbcType="VARCHAR" property="date"/>
+        <result column="ip_counts" jdbcType="BIGINT" property="ipCounts"/>
+        <result column="pv_counts" jdbcType="BIGINT" property="pvCounts"/>
+        <result column="week_day" jdbcType="VARCHAR" property="weekDay"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+
+
+    <select id="queryByDate" resultMap="baseResultMap">
+        select
+            id,
+            `date`,
+            ip_counts,
+            pv_counts,
+            week_day,
+            create_time
+        from
+            web_pv_count
+        where
+            `date` = #{date}
+    </select>
+    <select id="queryRecordsByDuration" resultMap="baseResultMap">
+        select
+            id,
+            `date`,
+            ip_counts,
+            pv_counts,
+            week_day,
+            create_time
+        from
+            web_pv_count
+        where
+            `date` between #{start} and #{end}
+    </select>
+</mapper>

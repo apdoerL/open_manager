@@ -18,19 +18,21 @@ import java.util.Enumeration;
 
 /**
  * @description: 校验接口幂等拦截器
- * @version:
  * @author: apdoer
  * @date: 2019-04-28 09:52
  */
 @Slf4j
 @Component
 public class RequiresIdempotencyInterceptor extends HandlerInterceptorAdapter {
+    private RedisCacheService redisCacheService;
+    private static final String HEADER_UNIQUE = "UNIQUE";
+
+
 
     @Autowired
-    private RedisCacheService redisCacheService;
-
-    // 请求头key
-    private static final String HEADER_UNIQUE = "UNIQUE";
+    public void setRedisCacheService(RedisCacheService redisCacheService) {
+        this.redisCacheService = redisCacheService;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

@@ -18,7 +18,7 @@ public interface PageViewHandler {
      * 获取总体pv数据
      * @return
      */
-    ResultVo getPVData();
+    ResultVo getPvData();
 
     /**
      * 获取 图表数据

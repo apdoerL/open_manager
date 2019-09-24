@@ -11,57 +11,30 @@ import java.sql.Timestamp;
  * @author apdoer
  * @date 2019-01-07
  */
-@Entity
 @Data
 @Table(name = "biz_task_record")
 public class JobRecordPo implements Serializable {
 
+    private static final long serialVersionUID = -5100799282270590458L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * 任务名称
-     */
-    private String jobName;
+    private String taskName;
 
-    /**
-     * Bean名称
-     */
     private String beanName;
 
-    /**
-     * 方法名称
-     */
     private String methodName;
 
-    /**
-     * 参数
-     */
     private String params;
 
-    /**
-     * cron表达式
-     */
     private String cronExpression;
 
-    /**
-     * 状态
-     */
-    private Boolean isSuccess;
+    private Integer status;
 
-    /**
-     * 异常详细
-     */
     private String exceptionDetail;
 
-    /**
-     * 耗时（毫秒）
-     */
-    private Long time;
+    private Long timeConsuming;
 
-    /**
-     * 创建日期
-     */
     private Timestamp createTime;
 }

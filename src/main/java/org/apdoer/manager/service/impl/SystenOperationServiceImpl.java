@@ -22,7 +22,7 @@ import java.util.List;
 public class SystenOperationServiceImpl implements SystenOperationService {
     private OperationRecordMapper recordMapper;
 
-    @Autowired
+    @Autowired(required = false)
     public void setRecordMapper(OperationRecordMapper recordMapper) {
         this.recordMapper = recordMapper;
     }
@@ -45,7 +45,7 @@ public class SystenOperationServiceImpl implements SystenOperationService {
     @Override
     public Long queryIpCountsByduration(String toString, String toString1) {
         try {
-            recordMapper.queryIpCountsByduration(toString,toString1);
+            return recordMapper.queryIpCountsByduration(toString,toString1);
         }catch (Exception e){
             log.error("query IpCountsByduration error start:{},end:{},reason:{}",toString,toString1,e);
             throw new QueryMysqlException(ExceptionCodeEnum.QUERY_MYSQL_ERROR);

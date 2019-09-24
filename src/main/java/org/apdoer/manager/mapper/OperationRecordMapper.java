@@ -8,12 +8,17 @@ import org.apdoer.manager.model.vo.OperationRecordVo;
 import java.util.List;
 
 /**
- * @author Li
+ * @author apdoer
  * @version 1.0
  * @date 2019/9/20 18:28
  */
 public interface OperationRecordMapper extends BaseMapper<RecordPo> {
 
+    /**
+     * 查询操作记录
+     * @param operationRecordVo vo
+     * @return list
+     */
     List<OperationRecordVo> queryRecords(OperationRecordVo operationRecordVo);
 
     /**
@@ -21,7 +26,8 @@ public interface OperationRecordMapper extends BaseMapper<RecordPo> {
      * 当日访问ip
      * @param toString start
      * @param toString1 end
+     * @return count
      */
-    @Select("select count(*) FROM (select ip FROM biz_record where create_time between #{0} and #{1} GROUP BY ip) as result")
-    void queryIpCountsByduration( String toString,  String toString1);
+    @Select("select count(*) FROM (select ip FROM biz_record where create_time between ${0} and ${1} GROUP BY ip) as result")
+    Long queryIpCountsByduration( String toString,  String toString1);
 }

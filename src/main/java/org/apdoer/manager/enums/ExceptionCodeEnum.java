@@ -37,6 +37,7 @@ public enum ExceptionCodeEnum {
 	/*查询mysql异常*/
 	QUERY_MYSQL_ERROR( 102210705, "query mysql error" ),
 	UPDATE_MYSQL_ERROR( 102210706, "update mysql error" ),
+	REQUEST_METHOD_ERROR( 102210707, "request method error" ),
 
 	/**
 	 * 请求参数验证 0700-0899
