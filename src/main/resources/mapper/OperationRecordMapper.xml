@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.apdoer.manager.mapper.OperationRecordMapper">
+    <resultMap id="systemRecordMap" type="org.apdoer.manager.model.vo.OperationRecordVo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="url" jdbcType="VARCHAR" property="operUrl"/>
+        <result column="ip" jdbcType="VARCHAR" property="ipAddress"/>
+        <result column="location" jdbcType="VARCHAR" property="location"/>
+        <result column="oper_type" jdbcType="VARCHAR" property="operType"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="operTime"/>
+    </resultMap>
+
+    <select id="queryRecords" resultMap="systemRecordMap">
+        select
+            id,
+            account,
+            url,
+            ip,
+            location,
+            oper_type,
+            create_time
+        FROM biz_record
+        <where>
+            <if test="account != null and account != ''">
+                AND account = #{account}
+            </if>
+            <if test="operType != null and operType != ''">
+                AND oper_type = #{operType}
+            </if>
+            <if test="operTime != null">
+                AND ( datediff ( create_time , #{operTime} ) = 0 )
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+
+</mapper>

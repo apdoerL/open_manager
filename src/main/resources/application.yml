@@ -1,0 +1,48 @@
+server:
+  port: 10010
+
+spring:
+  profiles:
+    active: dev
+  jackson:
+    time-zone: GMT+8
+  data:
+    redis:
+      repositories:
+        enabled: false
+
+  #配置 Jpa
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: true
+  redis:
+    host: 39.105.47.53
+    port: 6379
+    timeout: 60000
+    password: Loh3wa#k
+    testOnBorrow: false
+    pool:
+      max-total: 20
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1
+
+#七牛云
+qiniu:
+  # 文件大小 /M
+  max-size: 15
+
+#邮箱验证码有效时间/分钟
+code:
+  expiration: 5
+
+#登录图形验证码有效时间/分钟
+loginCode:
+  expiration: 2
+logging:
+  config: classpath:logback-${spring.profiles.active:dev}.xml
