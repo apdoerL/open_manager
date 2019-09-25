@@ -12,13 +12,13 @@ import java.lang.reflect.Method;
  * @author
  */
 @Slf4j
-public class QuartzRunnable implements Runnable {
+public class TaskExecuteRunnable implements Runnable {
 
 	private Object target;
 	private Method method;
 	private String params;
 
-	public QuartzRunnable(String beanName, String methodName, String params)
+	public TaskExecuteRunnable(String beanName, String methodName, String params)
 			throws NoSuchMethodException, SecurityException {
 		this.target = SpringContextHolder.getBean(beanName);
 		this.params = params;

@@ -22,10 +22,10 @@ public class EmailVo {
      * 收件人，支持多个收件人，用逗号分隔
      */
     @NotEmpty
-    private List<String> tos;
+    private List<String> receivers;
 
     @NotBlank
-    private String subject;
+    private String title;
 
     @NotBlank
     private String content;

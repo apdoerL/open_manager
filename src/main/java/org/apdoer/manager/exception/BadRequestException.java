@@ -2,9 +2,6 @@ package org.apdoer.manager.exception;
 
 import lombok.Getter;
 import org.apdoer.manager.enums.ExceptionCodeEnum;
-import org.springframework.http.HttpStatus;
-
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 /**
  * @author apdoer
@@ -14,6 +11,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Getter
 public class BadRequestException extends RuntimeException{
 
+    private static final long serialVersionUID = 793287091294753721L;
     private ExceptionCodeEnum exceptionCodeEnum;
 
     public BadRequestException(String msg){

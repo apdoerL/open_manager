@@ -2,6 +2,7 @@ package org.apdoer.manager.controller;
 
 import org.apdoer.manager.annotations.SystemControllerLog;
 import org.apdoer.manager.handler.EmailHandler;
+import org.apdoer.manager.model.vo.EmailConfigVo;
 import org.apdoer.manager.model.vo.EmailVo;
 import org.apdoer.manager.model.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class EmailController {
 
 
     @GetMapping("/email")
-    @SystemControllerLog("")
+    @SystemControllerLog("获取初始邮件配置")
     public ResultVo get(){
         return emailHandler.get();
     }
@@ -36,7 +37,6 @@ public class EmailController {
     @SystemControllerLog("配置邮件")
     @PutMapping(value = "/email")
     public ResultVo emailConfig(@Validated @RequestBody EmailConfigVo emailConfig){
-//        emailService.update(emailConfig,emailService.find());
         return emailHandler.update(emailConfig);
     }
 
@@ -44,7 +44,6 @@ public class EmailController {
     @SystemControllerLog("发送邮件")
     @PostMapping(value = "/email")
     public ResponseEntity send(@Validated @RequestBody EmailVo emailVo){
-//        emailService.send(emailVo,emailService.find());
         return emailHandler.send(emailVo);
     }
 }

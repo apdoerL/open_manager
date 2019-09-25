@@ -12,6 +12,8 @@ import java.util.stream.IntStream;
  */
 public class EntityExistException extends RuntimeException {
 
+    private static final long serialVersionUID = -435441697442251748L;
+
     public EntityExistException(Class clazz, Object... saveBodyParamsMap) {
         super(EntityExistException.generateMessage(clazz.getSimpleName(), toMap(String.class, String.class, saveBodyParamsMap)));
     }

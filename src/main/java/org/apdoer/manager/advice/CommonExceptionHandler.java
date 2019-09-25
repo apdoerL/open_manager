@@ -18,7 +18,6 @@ import javax.validation.ConstraintViolationException;
 
 import java.util.Set;
 
-import static org.springframework.http.HttpStatus.*;
 
 /**
  * 统一异常处理
@@ -77,6 +76,18 @@ public class CommonExceptionHandler {
     public ResultVo handleException(MethodArgumentNotValidException e){
         log.error("MethodArgumentNotValidException",e);
         return ResultVoBuildUtils.buildResultVo(ExceptionCodeEnum.REQUEST_PARAM_INVALID.getCode(),e.getBindingResult().getFieldError().getDefaultMessage());
+    }
+
+    /**
+     * 处理定时任务异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(TaskException.class)
+    @ResponseBody
+    public ResultVo handleException(TaskException e){
+        log.error("taskException",e);
+        return ResultVoBuildUtils.buildResultVo(e.getExceptionCodeEnum().getCode(),e.getExceptionCodeEnum().getValue());
     }
 
     /**

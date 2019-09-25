@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
- * 测试用
+ * 测试用,写好定时任务,入库,
  * @author apdoer
  * @date 2019-01-08
  */

@@ -1,72 +1,71 @@
-//package org.apdoer.manager.config;
-//import lombok.extern.slf4j.Slf4j;
-//import org.apdoer.manager.handler.QuartzJobHandler;
-//import org.apdoer.manager.model.pojo.JobRecordPo;
-//import org.apdoer.manager.model.pojo.QuartzJobPo;
-//import org.apdoer.manager.repository.QuartzLogRepository;
-//import org.apdoer.manager.utils.QuartzManage;
-//import org.apdoer.manager.runnable.QuartzRunnable;
-//import org.apdoer.manager.utils.SpringContextHolder;
-//import org.apdoer.manager.utils.ThrowableUtil;
-//import org.quartz.JobExecutionContext;
-//import org.springframework.scheduling.annotation.Async;
-//import org.springframework.scheduling.quartz.QuartzJobBean;
-//
-//import java.util.concurrent.ExecutorService;
-//import java.util.concurrent.Executors;
-//import java.util.concurrent.Future;
-//
-///**
-// * 参考人人开源，https://gitee.com/renrenio/renren-security
-// * @author
-// * @date 2019-01-07
-// */
-//@Async
-//@Slf4j
-//public class ExecutionJob extends QuartzJobBean {
-//
-//    private ExecutorService executorService = Executors.newSingleThreadExecutor();
-//
-//    @Override
-//    protected void executeInternal(JobExecutionContext context) {
-//        QuartzJobPo quartzJob = (QuartzJobPo) context.getMergedJobDataMap().get(QuartzJobPo.JOB_KEY);
-//        // 获取spring bean
-//        QuartzLogRepository quartzLogRepository = SpringContextHolder.getBean("quartzLogRepository");
-//        QuartzJobHandler quartzJobService = SpringContextHolder.getBean("quartzJobService");
-//        QuartzManage quartzManage = SpringContextHolder.getBean("quartzManage");
-//
-//        JobRecordPo quartzLog = new JobRecordPo();
-//        quartzLog.setJobName(quartzJob.getJobName());
-//        quartzLog.setBeanName(quartzJob.getBeanName());
-//        quartzLog.setMethodName(quartzJob.getMethodName());
-//        quartzLog.setParams(quartzJob.getParams());
-//        long startTime = System.currentTimeMillis();
-//        quartzLog.setCronExpression(quartzJob.getCronExpression());
-//        try {
-//            // 执行任务
-//            log.info("任务准备执行，任务名称：{}", quartzJob.getJobName());
-//            QuartzRunnable task = new QuartzRunnable(quartzJob.getBeanName(), quartzJob.getMethodName(),
-//                    quartzJob.getParams());
-//            Future<?> future = executorService.submit(task);
-//            future.get();
-//            long times = System.currentTimeMillis() - startTime;
-//            quartzLog.setTime(times);
-//            // 任务状态
-//            quartzLog.setIsSuccess(true);
-//            log.info("任务执行完毕，任务名称：{} 总共耗时：{} 毫秒", quartzJob.getJobName(), times);
-//        } catch (Exception e) {
-//            log.error("任务执行失败，任务名称：{}" + quartzJob.getJobName(), e);
-//            long times = System.currentTimeMillis() - startTime;
-//            quartzLog.setTime(times);
-//            // 任务状态 0：成功 1：失败
-//            quartzLog.setIsSuccess(false);
-//            quartzLog.setExceptionDetail(ThrowableUtil.getStackTrace(e));
-//            //出错就暂停任务
-//            quartzManage.pauseJob(quartzJob);
-//            //更新状态
-//            quartzJobService.updateIsPause(quartzJob);
-//        } finally {
-//            quartzLogRepository.save(quartzLog);
-//        }
-//    }
-//}
+package org.apdoer.manager.config;
+import lombok.extern.slf4j.Slf4j;
+import org.apdoer.manager.enums.TaskStatusEnum;
+import org.apdoer.manager.handler.TaskHandler;
+import org.apdoer.manager.mapper.TaskLogMapper;
+import org.apdoer.manager.model.pojo.TaskLogPo;
+import org.apdoer.manager.model.pojo.QuartzJobPo;
+import org.apdoer.manager.runnable.TaskExecuteRunnable;
+import org.apdoer.manager.utils.SpringContextHolder;
+import org.apdoer.manager.utils.ThrowableUtil;
+import org.quartz.JobExecutionContext;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.quartz.QuartzJobBean;
+
+import java.util.Date;
+import java.util.concurrent.ExecutorService;
+
+/**
+ * @author apdoer
+ * @date 2019-01-07
+ */
+@Async
+@Slf4j
+public class ExecutionJob extends QuartzJobBean {
+
+    private ExecutorService executorService = OpenManagerSingleThreadPool.getInstance();
+
+    @Override
+    protected void executeInternal(JobExecutionContext context) {
+        QuartzJobPo quartzJob = (QuartzJobPo) context.getMergedJobDataMap().get(QuartzJobPo.JOB_KEY);
+        // 获取spring bean
+        TaskLogMapper taskLogMapper = SpringContextHolder.getBean("taskLogMapper");
+        TaskHandler quartzJobService = SpringContextHolder.getBean("taskHandlerImpl");
+        QuartzManageConfig quartzManage = SpringContextHolder.getBean("quartzManageConfig");
+
+        long startTime = System.currentTimeMillis();
+        TaskLogPo taskLogPo = TaskLogPo.builder()
+                            .taskName(quartzJob.getTaskName())
+                            .beanName(quartzJob.getBeanName())
+                            .methodName(quartzJob.getMethodName())
+                            .params(quartzJob.getParams())
+                            .createTime(new Date())
+                            .cronExpression(quartzJob.getCronExpression()).build();
+        try {
+            log.info("task is executing，taskName：{}", quartzJob.getTaskName());
+
+            TaskExecuteRunnable task = new TaskExecuteRunnable(quartzJob.getBeanName(), quartzJob.getMethodName(),
+                    quartzJob.getParams());
+            executorService.submit(task).get();
+            taskLogPo.setTimeConsuming(System.currentTimeMillis() - startTime);
+            // 任务状态
+            taskLogPo.setStatus(TaskStatusEnum.ENABLED.getStatus());
+
+            log.info("task execute success，taskName：{} timeConsuming：{}ms", quartzJob.getTaskName(), System.currentTimeMillis() - startTime);
+        } catch (Exception e) {
+            log.error("task execute failed，taskName：{}" + quartzJob.getTaskName(), e);
+
+            long endTime = System.currentTimeMillis() - startTime;
+            taskLogPo.setTimeConsuming(endTime);
+            taskLogPo.setStatus(TaskStatusEnum.PAUSE.getStatus());
+            taskLogPo.setExceptionDetail(ThrowableUtil.getStackTrace(e));
+
+            //出错就暂停任务
+            quartzManage.pauseJob(quartzJob);
+            //更新状态
+            quartzJobService.updateTaskStatus(quartzJob.getId(),quartzJob.getStatus());
+        } finally {
+            taskLogMapper.insertSelective(taskLogPo);
+        }
+    }
+}

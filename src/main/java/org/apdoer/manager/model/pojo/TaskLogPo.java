@@ -1,10 +1,13 @@
 package org.apdoer.manager.model.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * 定时任务执行记录
@@ -12,8 +15,11 @@ import java.sql.Timestamp;
  * @date 2019-01-07
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "biz_task_record")
-public class JobRecordPo implements Serializable {
+public class TaskLogPo implements Serializable {
 
     private static final long serialVersionUID = -5100799282270590458L;
     @Id
@@ -36,5 +42,5 @@ public class JobRecordPo implements Serializable {
 
     private Long timeConsuming;
 
-    private Timestamp createTime;
+    private Date createTime;
 }
