@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadFactory;
  * @version 1.0
  * @date 2019/9/25 14:29
  */
-public class OpenManagerThreadFactory {
+class OpenManagerThreadFactory {
     private ThreadFactory threadFactory;
 
 
@@ -21,7 +21,7 @@ public class OpenManagerThreadFactory {
         private static final ThreadFactory INSTANCE = new OpenManagerThreadFactory().threadFactory;
     }
 
-    public static ThreadFactory getInstance(){
+    static ThreadFactory getInstance(){
         return InnerThreadFactory.INSTANCE;
     }
 }

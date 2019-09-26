@@ -12,22 +12,25 @@ import org.springframework.stereotype.Component;
 
 /**
  * 定时任务配置
- * @author
+ * @author apdoer
  * @date 2019-01-07
  */
 @Configuration
 public class QuartzConfig {
-
 	/**
 	 * 解决Job中注入Spring Bean为null的问题
 	 */
 	@Component("quartzJobFactory")
 	public class QuartzJobFactory extends AdaptableJobFactory {
-
-		@Autowired
 		private AutowireCapableBeanFactory capableBeanFactory;
 
+		@Autowired
+		public void setCapableBeanFactory(AutowireCapableBeanFactory capableBeanFactory) {
+			this.capableBeanFactory = capableBeanFactory;
+		}
+
 		@Override
+		@SuppressWarnings("all")
 		protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception {
 
 			//调用父类的方法
@@ -39,9 +42,9 @@ public class QuartzConfig {
 
 	/**
 	 * 注入scheduler到spring
-	 * @param quartzJobFactory
-	 * @return
-	 * @throws Exception
+	 * @param quartzJobFactory factory
+	 * @return Scheduler
+	 * @throws Exception e
 	 */
 	@Bean(name = "scheduler")
 	public Scheduler scheduler(QuartzJobFactory quartzJobFactory) throws Exception {

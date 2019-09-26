@@ -64,7 +64,8 @@ public class OpenManagerThreadPool {
 	public void execute(Runnable runnable) {
 		this.threadPoolExecutor.execute(runnable);
 	}
-	
+
+	@SuppressWarnings("unused")
 	public void shutdown() {
 		this.threadPoolExecutor.shutdown();
 	}

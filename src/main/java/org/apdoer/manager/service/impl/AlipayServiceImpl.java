@@ -24,12 +24,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class AlipayServiceImpl implements AlipayService {
-
-    @Autowired
-    AlipayUtils alipayUtils;
-
-    @Autowired
     private AlipayMapper alipayMapper;
+    private AlipayUtils alipayUtils;
+
+
+
+    @Autowired
+    public void setAlipayUtils(AlipayUtils alipayUtils) {
+        this.alipayUtils = alipayUtils;
+    }
+    @Autowired
+    @SuppressWarnings("all")
+    public void setAlipayMapper(AlipayMapper alipayMapper) {
+        this.alipayMapper = alipayMapper;
+    }
+
+
 
 
 

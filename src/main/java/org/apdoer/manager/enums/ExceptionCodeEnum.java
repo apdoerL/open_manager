@@ -35,19 +35,20 @@ public enum ExceptionCodeEnum {
 	/*无权限用户*/
 	UNAUTHORIZED_USERS( 101080404, "unauthorized users" ),
 	/*查询mysql异常*/
-	QUERY_MYSQL_ERROR( 102210705, "query mysql error" ),
-	UPDATE_MYSQL_ERROR( 102210706, "update mysql error" ),
-	REQUEST_METHOD_ERROR( 102210707, "request method error" ),
-	TASK_ERROR(102210708,"task error"),
+	QUERY_MYSQL_ERROR( 102210405, "query mysql error" ),
+	UPDATE_MYSQL_ERROR( 102210406, "update mysql error" ),
+	REQUEST_METHOD_ERROR( 102210407, "request method error" ),
+	TASK_ERROR(102210408,"task error"),
 	/**
-	 * 请求参数验证 0700-0899
+	 * 请求参数验证 0500-0699
 	 */
-	REQUEST_PARAM_INVALID(102210701,"param invalid")
+	REQUEST_PARAM_INVALID(102210501,"param invalid"),
 
 	/**
 	 * 0700-0899：业务验证
 	 */
-
+	/*用户已经有组了*/
+	USER_GROUP_EXISTS(102210701,"task error"),
 
 	;
 	private int code;
