@@ -30,7 +30,6 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-        <!--database-->
         <!-- database -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -170,7 +169,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>ma.glasnost.orika</groupId>
+            <artifactId>orika-core</artifactId>
+            <version>1.5.2</version>
+        </dependency>
         <!-- fastjson -->
         <dependency>
             <groupId>com.alibaba</groupId>

@@ -10,39 +10,18 @@ import org.springframework.cache.annotation.Cacheable;
  * @author apdoer
  * @date 2018-12-31
  */
-@CacheConfig(cacheNames = "alipay")
 public interface AlipayService {
-
-    /**
-     * 处理来自PC的交易请求
-     * @param alipay
-     * @param trade
-     * @return
-     * @throws Exception
-     */
-    String toPayAsPC(AlipayPo alipay, TradeVo trade) throws Exception;
-
-    /**
-     * 处理来自手机网页的交易请求
-     * @param alipay
-     * @param trade
-     * @return
-     * @throws Exception
-     */
-    String toPayAsWeb(AlipayPo alipay, TradeVo trade) throws Exception;
 
     /**
      * 查询配置
      * @return
      */
-    @Cacheable(key = "'1'")
-    AlipayPo find();
+    AlipayPo queryConfig();
 
     /**
-     * 更新配置
+     * 更新配置 如果放缓存用cachePut 返回值为 AlipayPo ,如果不放缓存,返回值为void
      * @param alipayConfig
      * @return
      */
-    @CachePut(key = "'1'")
-    AlipayPo update(AlipayPo alipayConfig);
+    void updateConfig(AlipayPo alipayConfig);
 }
