@@ -2,6 +2,8 @@ package org.apdoer.manager.model.vo;
 
 import lombok.*;
 
+import java.util.Date;
+
 /**
  * @author apdoer
  * @version 1.0
@@ -18,6 +20,8 @@ public class RoleVo {
     private String name;
 
     private String desc;
+
+    private Date createTime;
 
     private Integer enabled;
 }

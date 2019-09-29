@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.apdoer.manager.mapper.WebGroupMapper">
+
+    <update id="updateGroupStatus">
+        update web_group set enabled = #{status} where group_id = #{groupId}
+    </update>
+    <insert id="addGroupMember">
+        insert into web_user_group
+            (user_id,group_id,create_time,enabled)
+        values(#{userId},#{groupId},now(),1)
+    </insert>
+    <select id="queryUserGroupId" resultType="java.lang.Integer">
+        select group_id from web_user_group where user_id =#{userId} and enabled = 1
+    </select>
+    <select id="queryGroupList" resultType="org.apdoer.manager.model.vo.WebGroupVo">
+        select
+            group_id,
+            group_name,
+            description,
+            enabled,
+            create_time
+        from web_group
+        where group_name like "%"#{queryContent}"%"
+    </select>
+</mapper>

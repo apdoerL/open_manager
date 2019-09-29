@@ -83,7 +83,7 @@ public class RoleController {
     @GetMapping("/perms/{roleId}")
     @SystemControllerLog("查询单个角色的权限")
     public ResultVo getPermsByRoleId(@PathVariable("roleId") Integer roleId){
-        return roleHandler.getRoleById(roleId);
+        return roleHandler.getPermById(roleId);
     }
 
     /**
@@ -108,6 +108,11 @@ public class RoleController {
         return roleHandler.updateRolePerm(rolePermUpdateVo);
     }
 
+    @PutMapping("/roleStatus/{roleId}/{status}")
+    @SystemControllerLog("更新角色状态")
+    public ResultVo updateRoleStatus(@PathVariable("roleId") Integer roleId,@PathVariable("status") Integer status){
+        return roleHandler.updateRoleStatus(roleId,status);
+    }
 
 //
 //    @SystemControllerLog("修改角色菜单")

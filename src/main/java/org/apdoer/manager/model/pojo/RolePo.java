@@ -28,7 +28,7 @@ public class RolePo implements Serializable {
 
     private String roleDesc;
 
-    private Byte enabled;
+    private Integer enabled;
 
     private Date createTime;
 }

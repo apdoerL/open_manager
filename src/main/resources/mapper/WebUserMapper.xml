@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.apdoer.manager.mapper.CustomerMapper">
+
+    <resultMap id="baseResultMap" type="org.apdoer.manager.model.vo.WebUserVo">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="google_code" jdbcType="VARCHAR" property="googleCode"/>
+        <result column="enabled" jdbcType="INTEGER" property="enabled"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+
+    <update id="updateCustomerStatus">
+        update web_user set enabled = #{status} where id =#{userId}
+    </update>
+    <select id="queryCustomerList" resultType="org.apdoer.manager.model.vo.WebUserVo">
+        select * from web_user where username like "%"#{queryContent}"%"
+    </select>
+</mapper>

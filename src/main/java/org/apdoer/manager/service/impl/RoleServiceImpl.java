@@ -1,11 +1,19 @@
 package org.apdoer.manager.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apdoer.manager.enums.ExceptionCodeEnum;
 import org.apdoer.manager.exception.EntityExistException;
+import org.apdoer.manager.exception.QueryMysqlException;
+import org.apdoer.manager.mapper.RoleMapper;
 import org.apdoer.manager.model.pojo.RolePo;
+import org.apdoer.manager.model.vo.PermissionVo;
+import org.apdoer.manager.model.vo.RoleIdDescVo;
+import org.apdoer.manager.model.vo.RoleVo;
 import org.apdoer.manager.service.RoleService;
 import org.apdoer.manager.utils.PageUtil;
 import org.apdoer.manager.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,12 +24,51 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @author Zheng Jie
+ * @author apdoer
  * @date 2018-12-03
  */
 @Service
+@Slf4j
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class RoleServiceImpl implements RoleService {
+    private RoleMapper roleMapper;
+
+    @Autowired
+    @SuppressWarnings("all")
+    public void setRoleMapper(RoleMapper roleMapper) {
+        this.roleMapper = roleMapper;
+    }
+
+    @Override
+    public List<RoleVo> queryRoleList(RoleVo roleVo) {
+        try {
+            return roleMapper.queryRoleList(roleVo);
+        }catch (Exception e){
+            log.error("query role list error;reason:",e);
+            throw new QueryMysqlException(ExceptionCodeEnum.QUERY_MYSQL_ERROR);
+        }
+    }
+
+    @Override
+    @Cacheable(cacheManager = "webRedisCacheManager",value = "COMMON",key = "'COMMON_allCreatedRole")
+    public List<RoleIdDescVo> queryAllCreatedRole() {
+        try {
+            return roleMapper.queryAllCreatedRole();
+        }catch (Exception e){
+            log.error("query all created role error;reason:",e);
+            throw new QueryMysqlException(ExceptionCodeEnum.QUERY_MYSQL_ERROR);
+        }
+    }
+
+    @Override
+    public List<PermissionVo> queryAllPerm() {
+        try {
+            return roleMapper.queryAllPerm();
+        }catch (Exception e){
+            log.error("query perm List error;reason:",e);
+            throw new QueryMysqlException(ExceptionCodeEnum.QUERY_MYSQL_ERROR);
+        }
+    }
 //
 //    @Autowired
 //    private RoleRepository roleRepository;

@@ -10,9 +10,17 @@ import org.apdoer.manager.model.vo.WebUserVo;
 public interface CustomerHandler {
     /**
      * 查询web用户列表
-     * @param pageBean
-     * @param webUserVo
-     * @return
+     * @param pageBean page
+     * @param webUserVo vo
+     * @return r
      */
     ResultVo queryCustomerList(PageBean<WebUserVo> pageBean, WebUserVo webUserVo);
+
+    /**
+     * 更新客户启用状态
+     * @param userId userId
+     * @param status status
+     * @return r
+     */
+    ResultVo updateCustomerStatus(Integer userId, Integer status);
 }

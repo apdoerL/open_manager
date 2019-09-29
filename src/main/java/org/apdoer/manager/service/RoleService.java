@@ -1,6 +1,9 @@
 package org.apdoer.manager.service;
 
 import org.apdoer.manager.model.pojo.RolePo;
+import org.apdoer.manager.model.vo.PermissionVo;
+import org.apdoer.manager.model.vo.RoleIdDescVo;
+import org.apdoer.manager.model.vo.RoleVo;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,6 +19,24 @@ import java.util.Set;
  */
 @CacheConfig(cacheNames = "role")
 public interface RoleService {
+    /**
+     * 查询角色列表
+     * @param roleVo rolevo
+     * @return r
+     */
+    List<RoleVo> queryRoleList(RoleVo roleVo);
+
+    /**
+     * 查询所有可用的角色
+     * @return r
+     */
+    List<RoleIdDescVo> queryAllCreatedRole();
+
+    /**
+     * 查询所有权限层级
+     * @return r
+     */
+    List<PermissionVo> queryAllPerm();
 
 //    /**
 //     * get

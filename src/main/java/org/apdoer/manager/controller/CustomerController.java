@@ -6,9 +6,7 @@ import org.apdoer.manager.model.dto.PageBean;
 import org.apdoer.manager.model.vo.ResultVo;
 import org.apdoer.manager.model.vo.WebUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author web 用户
@@ -32,5 +30,9 @@ public class CustomerController {
         return customerHandler.queryCustomerList(pageBean,webUserVo);
     }
 
-
+    @PutMapping("/customerStatus/{id}/{status}")
+    @SystemControllerLog("更新客户状态")
+    public ResultVo updateCustomerStatus(@PathVariable("id") Integer userId, @PathVariable("status") Integer status){
+        return customerHandler.updateCustomerStatus(userId,status);
+    }
 }
