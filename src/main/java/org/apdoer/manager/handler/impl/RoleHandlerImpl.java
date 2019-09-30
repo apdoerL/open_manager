@@ -154,6 +154,9 @@ public class RoleHandlerImpl implements RoleHandler {
         }
         roleService.updateRoleStatus(roleId,status);
         redisHandler.cleanAllCreatedRole();
+        //清除拥有该角色的用户的角色
+        List<Integer> userIds = roleService.queryUserByRoleId(roleId);
+        userIds.forEach(var->redisHandler.cleanUserRoleByUserId(var));
         return ResultVoBuildUtils.buildSuccessResultVo();
     }
 

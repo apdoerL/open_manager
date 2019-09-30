@@ -11,4 +11,15 @@ public interface RedisHandler {
      */
     void cleanAllCreatedRole();
 
+    /**
+     * 清除角色的权限
+     * @param roleId roleId
+     */
+    void cleanPermByRoleId(Integer roleId);
+
+    /**
+     * 清除用户的角色
+     * @param var userId
+     */
+    void cleanUserRoleByUserId(Integer var);
 }

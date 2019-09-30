@@ -16,5 +16,5 @@ public class RoleIdDescVo {
 
     private Integer roleId;
 
-    private String name;
+    private String desc;
 }
